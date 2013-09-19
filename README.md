@@ -9,46 +9,50 @@
     usage: s [options] [script]
 
     info/manipulation:
-      -l, --list            List all scripts.
-                            Default command if no arguments are passed.
-      -m, --move foo bar    Renames a script 'foo' to 'bar'.
-      -c, --copy foo bar    Copies a script 'foo' to 'bar'.
-      -d, --delete <foo>    Deletes the script 'foo'.
+      -l, --list           List all scripts.
+                           This is the default command if no arguments are
+                           passed.
+      -m, --move foo bar   Renames a script 'foo' to 'bar'.
+      -c, --copy foo bar   Copies a script 'foo' to 'bar'.
+      -d, --delete <foo>   Deletes the script 'foo'.
 
-    editing/creation:
-      -b, --bash <foo>      Edit/create bash script 'foo'.
-                            Default if a script name is given, but no script
-                            type is specified.
-      -z, --zsh <foo>       Edit/create zsh script 'foo'.
-      -p, --python <foo>    Edit/create python script 'foo'.
-      -r, --ruby <foo>      Edit/create ruby script 'foo'.
-      -pe, --perl <foo>     Edit/create perl script 'foo'.
+    adding/editing:
+      -b, --bash <foo>     Add/edit bash script 'foo'.
+                           This is the default if a script name is given, but
+                           no script type is specified.
+      -z, --zsh <foo>      Add/edit zsh script 'foo'.
+      -p, --python <foo>   Add/edit python script 'foo'.
+      -r, --ruby <foo>     Add/edit ruby script 'foo'.
+      -pe, --perl <foo>    Add/edit perl script 'foo'.
 
     etc:
-      -h, --help            Show this help screen.
+      -h, --help           Show this help screen.
 
 ## Installation
 
 1. Clone the `s` repo into a directory
-2. Add the following to your bashrc or zshrc:
+2. Add the following to your `bashrc` or `zshrc`:
 
 ```bash
-export S_PATH="<path to s repo>"
-export S_BIN_PATH="<path to bin folder>"
-export PATH=$S_PATH:$PATH
+source <path to s.sh>
 ```
 
-If everything is set up correctly, `s` should be available on the command line.
+If everything is working, `s` should be available on the command line.  `s`
+will default to using `$HOME/.bin` as your script directory.  If you want to
+change this, add the following somewhere in your `zshrc` or `bashrc`:
 
-**Note** - If you already have a bin directory in your search path, just export
-`S_BIN_PATH` with its location.
+```bash
+export S_BIN_PATH=<path to bin directory>
+```
 
-## Basics
+It's also nice to have your `.bin` directory in version control.
+
+## Examples
 
 To create a new script using `s` called `lo`, issue the following command:
 
 ```bash
-% s lo
+$ s lo
 ```
 
 This will open a new file using `$EDITOR`.  By default, `s` will automatically
@@ -66,17 +70,16 @@ fi
 ```
 
 Save and exit.  `s` saves this code in the directory specified by
-`$S_BIN_PATH`, which should be added to your binary search path.  Try out the
-new script:
+`$S_BIN_PATH`.  Try out the new script:
 
 ```bash
-% lo somefile.doc
+$ lo somefile.doc
 ```
 
 What if you want to edit `lo` later?...
 
 ```bash
-% s lo
+$ s lo
 ```
 
 ...opens the code for `lo` in `$EDITOR`.  Make your changes, save, and quit.
