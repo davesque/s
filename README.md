@@ -8,14 +8,14 @@
 
     usage: s [options] [script]
 
-    Info/manipulation:
+    info/manipulation:
       -l, --list            List all scripts.
                             Default command if no arguments are passed.
       -m, --move foo bar    Renames a script 'foo' to 'bar'.
       -c, --copy foo bar    Copies a script 'foo' to 'bar'.
       -d, --delete <foo>    Deletes the script 'foo'.
 
-    Editing/creation:
+    editing/creation:
       -b, --bash <foo>      Edit/create bash script 'foo'.
                             Default if a script name is given, but no script
                             type is specified.
@@ -24,7 +24,7 @@
       -r, --ruby <foo>      Edit/create ruby script 'foo'.
       -pe, --perl <foo>     Edit/create perl script 'foo'.
 
-    Etc:
+    etc:
       -h, --help            Show this help screen.
 
 ## Installation
