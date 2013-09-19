@@ -1,11 +1,10 @@
 # Switch board
 function s {
   if [[ -z $S_INITIALIZED ]]; then
-    cat <<ERROR
-\`s\` did not initialize properly.  Please open a new shell and inspect any error
-messages which are displayed.
-ERROR
-    return 1
+    if ! __s_init; then
+      echo "s: failed to initialize!" >& 2
+      return 1
+    fi
   fi
 
   case $1 in
@@ -46,13 +45,19 @@ ERROR
 function __s_init {
   # Ensure EDITOR is set
   if [[ -z $EDITOR ]]; then
-    echo "Must set EDITOR environment variable to use s" >& 2
+    echo "s: EDITOR environment is not set!" >& 2
     return 1
   fi
 
   # Set default bin path
   if [[ -z $S_BIN_PATH ]]; then
     export S_BIN_PATH="$HOME/.bin"
+  fi
+
+  # Ensure directory at $S_BIN_PATH exists
+  if [[ ! -d $S_BIN_PATH ]]; then
+    echo "s: directory specified by S_BIN_PATH ($S_BIN_PATH) does not exist!" >& 2
+    return 1
   fi
 
   # Ensure $S_BIN_PATH is in PATH
