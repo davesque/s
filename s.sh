@@ -9,28 +9,36 @@ ERROR
   fi
 
   case $1 in
+    # info/manipulation
     "-l"|"--list")
-      __s_list
-      ;;
-    "-h"|"--help")
-      __s_help
-      ;;
+      __s_list;;
     "-m"|"--move")
-      __s_move $2 $3
-      ;;
+      __s_move $2 $3;;
     "-c"|"--copy")
-      __s_copy $2 $3
-      ;;
+      __s_copy $2 $3;;
     "-d"|"--delete")
-      __s_delete $2
-      ;;
+      __s_delete $2;;
+
+    # editing/manipulation
+    "-z"|"--zsh")
+      __s_edit zsh $2;;
+    "-p"|"--python")
+      __s_edit python $2;;
+    "-r"|"--ruby")
+      __s_edit ruby $2;;
+    "-pe"|"--perl")
+      __s_edit perl $2;;
+
+    # etc
+    "-h"|"--help")
+      __s_help;;
+
     *)
       if [[ -z $1 ]]; then
         __s_list
       else
-        __s_edit $1
-      fi
-      ;;
+        __s_edit bash $1
+      fi;;
   esac
 }
 
@@ -58,23 +66,32 @@ function __s_init {
 
 # Edits or adds a script in $S_BIN_PATH
 function __s_edit {
-  [[ -z $1 ]] && return 1
+  [[ -z $1 || -z $2 ]] && return 1
 
-  local s_loc=$S_BIN_PATH/$1
+  local s_type=$1
+  local s_loc=$S_BIN_PATH/$2
+  local default_content="#!/usr/bin/env $s_type\n"
 
+  # Create script with default content if it doesn't exist
   if [[ ! -e $s_loc ]]; then
-    echo "#!/usr/bin/env bash" >> $s_loc
+    echo "$default_content" >> $s_loc
     chmod 755 $s_loc
   fi
 
+  # Edit script
   if [[ -n $S_EDITOR_ARGS ]]; then
     eval $EDITOR $S_EDITOR_ARGS $s_loc
   else
     $EDITOR $s_loc
   fi
+
+  # Remove script if nothing was added
+  if [[ $(cat $s_loc) == $default_content ]]; then
+    rm $s_loc
+  fi
 }
 
-# Renames a function in $S_BIN_PATH
+# Renames a script in $S_BIN_PATH
 function __s_move {
   [[ -z $1 || -z $2 ]] && return 1
 
@@ -94,7 +111,7 @@ function __s_move {
   fi
 }
 
-# Copies a function in $S_BIN_PATH
+# Copies a script in $S_BIN_PATH
 function __s_copy {
   [[ -z $1 || -z $2 ]] && return 1
 
@@ -114,7 +131,7 @@ function __s_copy {
   fi
 }
 
-# Removes a function in $S_BIN_PATH
+# Removes a script in $S_BIN_PATH
 function __s_delete {
   [[ -z $1 ]] && return 1
 
@@ -128,7 +145,7 @@ function __s_delete {
   fi
 }
 
-# Lists all functions in $S_BIN_PATH
+# Lists all scripts in $S_BIN_PATH
 function __s_list {
   echo "${fg_bold[yellow]}List of scripts:${reset_color}"
   ls -1 $S_BIN_PATH
@@ -143,14 +160,14 @@ usage: s [options] [script]
 \`s\` is hosted on github at \`https://github.com/davesque/s\`.  It was
 originally inspired by \`f\` (https://github.com/colinta/f).
 
-Info/manipulation:
+info/manipulation:
   -l, --list            List all scripts.
                         Default command if no arguments are passed.
   -m, --move foo bar    Renames a script 'foo' to 'bar'.
   -c, --copy foo bar    Copies a script 'foo' to 'bar'.
   -d, --delete <foo>    Deletes the script 'foo'.
 
-Editing/creation:
+editing/creation:
   -b, --bash <foo>      Edit/create bash script 'foo'.
                         Default if a script name is given, but no script
                         type is specified.
@@ -159,7 +176,7 @@ Editing/creation:
   -r, --ruby <foo>      Edit/create ruby script 'foo'.
   -pe, --perl <foo>     Edit/create perl script 'foo'.
 
-Etc:
+etc:
   -h, --help            Show this help screen.
 
 examples:
