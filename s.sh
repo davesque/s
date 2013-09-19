@@ -161,23 +161,24 @@ usage: s [options] [script]
 originally inspired by \`f\` (https://github.com/colinta/f).
 
 info/manipulation:
-  -l, --list            List all scripts.
-                        Default command if no arguments are passed.
-  -m, --move foo bar    Renames a script 'foo' to 'bar'.
-  -c, --copy foo bar    Copies a script 'foo' to 'bar'.
-  -d, --delete <foo>    Deletes the script 'foo'.
+  -l, --list           List all scripts.
+                       This is the default command if no arguments are
+                       passed.
+  -m, --move foo bar   Renames a script 'foo' to 'bar'.
+  -c, --copy foo bar   Copies a script 'foo' to 'bar'.
+  -d, --delete <foo>   Deletes the script 'foo'.
 
-editing/creation:
-  -b, --bash <foo>      Edit/create bash script 'foo'.
-                        Default if a script name is given, but no script
-                        type is specified.
-  -z, --zsh <foo>       Edit/create zsh script 'foo'.
-  -p, --python <foo>    Edit/create python script 'foo'.
-  -r, --ruby <foo>      Edit/create ruby script 'foo'.
-  -pe, --perl <foo>     Edit/create perl script 'foo'.
+adding/editing:
+  -b, --bash <foo>     Add/edit bash script 'foo'.
+                       This is the default if a script name is given, but
+                       no script type is specified.
+  -z, --zsh <foo>      Add/edit zsh script 'foo'.
+  -p, --python <foo>   Add/edit python script 'foo'.
+  -r, --ruby <foo>     Add/edit ruby script 'foo'.
+  -pe, --perl <foo>    Add/edit perl script 'foo'.
 
 etc:
-  -h, --help            Show this help screen.
+  -h, --help           Show this help screen.
 
 examples:
 
@@ -199,8 +200,7 @@ code:
   fi
 
 Save and exit.  \`s\` saves this code in the directory specified by
-\`\$S_BIN_PATH\`, which should be added to your binary search path.  Try out
-the new script:
+\`\$S_BIN_PATH\`.  Try out the new script:
 
   $ lo somefile.doc
 
