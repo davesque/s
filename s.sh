@@ -47,7 +47,7 @@ function s {
 function __s_init {
   # Ensure EDITOR is set
   if [[ -z $EDITOR ]]; then
-    echo "s: EDITOR environment is not set!" >& 2
+    echo "s: EDITOR environment variable is not set!" >& 2
     return 1
   fi
 
@@ -73,7 +73,10 @@ function __s_init {
 
 # Edits or adds a script in $S_BIN_PATH
 function __s_edit {
-  [[ -z $1 || -z $2 ]] && return 1
+  if [[ -z $1 || -z $2 ]]; then
+    echo "s: must invoke as follows \`s [-b|-z|-p|-r|-pe] <script name>\`" >& 2
+    return 1
+  fi
 
   local s_type=$1
   local s_loc=$S_BIN_PATH/$2
@@ -100,7 +103,10 @@ function __s_edit {
 
 # Renames a script in $S_BIN_PATH
 function __s_move {
-  [[ -z $1 || -z $2 ]] && return 1
+  if [[ -z $1 || -z $2 ]]; then
+    echo "s: must invoke as follows \`s -m <source> <destination>\`" >& 2
+    return 1
+  fi
 
   local s_old=$S_BIN_PATH/$1
   local s_new=$S_BIN_PATH/$2
@@ -120,7 +126,10 @@ function __s_move {
 
 # Copies a script in $S_BIN_PATH
 function __s_copy {
-  [[ -z $1 || -z $2 ]] && return 1
+  if [[ -z $1 || -z $2 ]]; then
+    echo "s: must invoke as follows \`s -c <source> <destination>\`" >& 2
+    return 1
+  fi
 
   local s_old=$S_BIN_PATH/$1
   local s_new=$S_BIN_PATH/$2
@@ -140,7 +149,10 @@ function __s_copy {
 
 # Removes a script in $S_BIN_PATH
 function __s_delete {
-  [[ -z $1 ]] && return 1
+  if [[ -z $1 ]]; then
+    echo "s: must invoke as follows \`s -d <script name>\`" >& 2
+    return 1
+  fi
 
   local s_loc=$S_BIN_PATH/$1
 
