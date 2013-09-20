@@ -167,7 +167,7 @@ function __s_delete {
 # Lists all scripts in $S_BIN_PATH
 function __s_list {
   echo "${fg_bold[yellow]}List of scripts:${reset_color}"
-  ls -1 $S_BIN_PATH
+  ls -1 $S_BIN_PATH/
 }
 
 function __s_help {
