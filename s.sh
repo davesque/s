@@ -80,7 +80,7 @@ function __s_edit {
 
   local s_type=$1
   local s_loc=$S_BIN_PATH/$2
-  local default_content="#!/usr/bin/env $s_type\n"
+  local default_content="#!/usr/bin/env $s_type"
 
   # Create script with default content if it doesn't exist
   if [[ ! -e $s_loc ]]; then
