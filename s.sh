@@ -19,6 +19,8 @@ function s {
       __s_delete $2;;
 
     # editing/manipulation
+    "-b"|"--bash")
+      __s_edit bash $2;;
     "-z"|"--zsh")
       __s_edit zsh $2;;
     "-p"|"--python")
