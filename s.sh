@@ -215,7 +215,7 @@ code:
   if [[ \$# -eq 0 ]]; then
     libreoffice --help
   else
-    libreoffice \$@ &!
+    libreoffice "\$@" &
   fi
 
 Save and exit.  \`s\` saves this code in the directory specified by

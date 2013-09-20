@@ -65,7 +65,7 @@ insert a bash shebang line at the top.  This behavior can be adjusted with the
 if [[ $# -eq 0 ]]; then
   libreoffice --help
 else
-  libreoffice $@ &!
+  libreoffice "$@" &
 fi
 ```
 
