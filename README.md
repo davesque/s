@@ -47,6 +47,10 @@ export S_BIN_PATH=<path to bin directory>
 
 It's also nice to have your `.bin` directory in version control.
 
+**WARNING**: If you _do_ keep your `.bin` directory in version control, be
+careful not to commit any scripts that may contain sensitive information,
+passwords, etc.
+
 ## Examples
 
 To create a new script using `s` called `lo`, issue the following command:
