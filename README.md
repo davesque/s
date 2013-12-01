@@ -4,6 +4,23 @@
 
 `s` was originally inspired by [f](https://github.com/colinta/f).
 
+## Purpose
+
+Hopping to and from your `bin` directory to manipulate or make quick updates to
+scripts while working can be time consuming.  Sure, it's just a quick `vim
+~/.bin/foo` away, but keystrokes are precious!  Spending even a small amount of
+time on a common task can interrupt your workflow if the process is not
+streamlined enough.  `s` tries to address this problem.  Here are some things
+that `s` can do:
+
+```bash
+s foo  # opens 'foo' in an editor
+s      # lists scripts in your bin directory
+s bar  # if 'bar' does not exist, creates it in your bin directory and opens it
+```
+
+Look below for more examples of how `s` works.
+
 ## Usage
 
     usage: s [options] [script]
