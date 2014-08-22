@@ -6,20 +6,19 @@
 
 ## Purpose
 
-Hopping to and from your `bin` directory to manipulate or make quick updates to
-scripts while working can be time consuming.  Sure, it's just a quick `vim
-~/.bin/foo` away, but keystrokes are precious!  Spending even a small amount of
-time on a common task can interrupt your workflow if the process is not
-streamlined enough.  `s` tries to address this problem.  Here are some things
-that `s` can do:
+Making quick edits to your shell scripts, adding new ones, adding the default
+shebang line, etc. can get annoying.  A lot of us do this pretty often every
+day, so why not make it as simple as possible?  `s` tries to do this.
+
+Some use cases:
 
 ```bash
-s foo  # opens 'foo' in an editor
-s      # lists scripts in your bin directory
-s bar  # if 'bar' does not exist, creates it in your bin directory and opens it
+$ s foo  # opens 'foo' in $EDITOR
+$ s      # lists scripts in your bin directory
+$ s bar  # if 'bar' does not exist, creates it in your bin directory and opens it
 ```
 
-Look below for more examples of how `s` works.
+...nice, huh?
 
 ## Usage
 
@@ -62,12 +61,6 @@ change this, add the following somewhere in your `zshrc` or `bashrc`:
 export S_BIN_PATH=<path to bin directory>
 ```
 
-It's also nice to have your `.bin` directory in version control.
-
-**WARNING**: If you _do_ keep your `.bin` directory in version control, be
-careful not to commit any scripts that may contain sensitive information,
-passwords, etc.
-
 ## Examples
 
 To create a new script using `s` called `lo`, issue the following command:
@@ -90,8 +83,8 @@ else
 fi
 ```
 
-Save and exit.  `s` saves this code in the directory specified by
-`$S_BIN_PATH`.  Try out the new script:
+Save and exit.  The code is saved in the directory specified by `$S_BIN_PATH`.
+Try out the new script:
 
 ```bash
 $ lo somefile.doc

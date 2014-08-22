@@ -176,9 +176,6 @@ s, a simple shell script manager
 
 usage: s [options] [script]
 
-\`s\` is hosted on github at \`https://github.com/davesque/s\`.  It was
-originally inspired by \`f\` (https://github.com/colinta/f).
-
 info/manipulation:
   -l, --list           List all scripts.
                        This is the default command if no arguments are
@@ -218,7 +215,7 @@ code:
     libreoffice "\$@" &
   fi
 
-Save and exit.  \`s\` saves this code in the directory specified by
+Save and exit.  The code is saved in the directory specified by
 \`\$S_BIN_PATH\`.  Try out the new script:
 
   $ lo somefile.doc
