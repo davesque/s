@@ -1,4 +1,1 @@
-function _s {
-  reply=($(ls $S_BIN_PATH))
-}
-compctl -K _s s
+compdef '_files -g "$S_BIN_PATH/*(:t)"' s
