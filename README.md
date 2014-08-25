@@ -16,9 +16,11 @@ Some use cases:
 $ s foo  # opens 'foo' in $EDITOR
 $ s      # lists scripts in your bin directory
 $ s bar  # if 'bar' does not exist, creates it in your bin directory and opens it
+         # with default content '#!/usr/bin/env bash' on first line
+$ s -p baz  # same as above line except inserts '#!/usr/bin/env python' as first line
 ```
 
-...nice, huh?
+No biggie.  Just makes things a bit easier.
 
 ## Usage
 
