@@ -14,14 +14,14 @@ Some use cases:
 
 ```bash
 # Creates and/or edits a script 'foo' in $EDITOR
-s foo
+$ s foo
 
 # Lists scripts in your bin directory
-s
+$ s
 
 # Uses your template called 'python' to create and edit a new script
 # 'bar'.  Just edits the script if it already exists.
-s -t python bar
+$ s -t python bar
 ```
 
 No biggie.  Just makes things a bit easier.
