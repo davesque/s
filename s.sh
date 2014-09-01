@@ -1,3 +1,10 @@
+# Get location of s.sh for use later
+if [[ -n "$BASH_VERSION" ]]; then
+  S_SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+else
+  S_SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd)"
+fi
+
 # Switch board
 function s {
   if [[ -z "$S_INITIALIZED" ]]; then
@@ -48,6 +55,17 @@ function __s_init {
   # Ensure EDITOR is set
   if [[ -z "$EDITOR" ]]; then
     echo "s: EDITOR environment variable is not set!" >& 2
+    return 1
+  fi
+
+  # Set default template path
+  if [[ -z "$S_TEMPLATE_PATH" ]]; then
+    export S_TEMPLATE_PATH="$S_SCRIPT_PATH/templates"
+  fi
+
+  # Ensure directory at $S_TEMPLATE_PATH exists
+  if [[ ! -d "$S_TEMPLATE_PATH" ]]; then
+    echo "s: directory specified by S_TEMPLATE_PATH ($S_TEMPLATE_PATH) does not exist!" >& 2
     return 1
   fi
 
