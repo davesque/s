@@ -58,9 +58,6 @@ No biggie.  Just makes things a bit easier.
       -r, --ruby <script>     Shorthand for `-t ruby <script>`
       -pe, --perl <script>    Shorthand for `-t perl <script>`
 
-    etc:
-      -h, --help              Show this help screen.
-
 ## Installation
 
 1. Clone the `s` repo into a directory
