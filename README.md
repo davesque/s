@@ -24,7 +24,7 @@ s
 s -t python bar
 ```
 
-...nice, huh?
+No biggie.  Just makes things a bit easier.
 
 ## Usage
 
