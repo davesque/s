@@ -36,6 +36,8 @@ function s {
       __s_edit ruby "$2";;
     "-pe"|"--perl")
       __s_edit perl "$2";;
+    "-t"|"--template")
+      __s_edit $2 "$3";;
 
     # etc
     "-h"|"--help")
@@ -45,7 +47,7 @@ function s {
       if [[ -z "$1" ]]; then
         __s_list
       else
-        __s_edit bash "$1"
+        __s_edit default "$1"
       fi;;
   esac
 }
@@ -93,16 +95,21 @@ function __s_init {
 function __s_edit {
   if [[ -z "$1" || -z "$2" ]]; then
     echo "s: must invoke as follows \`s [-b|-z|-p|-r|-pe] <script name>\`" >& 2
+    echo "or \`s -t <template name> <script name>\`" >& 2
     return 1
   fi
 
-  local s_type="$1"
+  local t_loc="$S_TEMPLATE_PATH/$1"
   local s_loc="$S_BIN_PATH/$2"
-  local default_content="#!/usr/bin/env $s_type"
 
-  # Create script with default content if it doesn't exist
+  if [[ ! -e "$t_loc" ]]; then
+    echo "s: template \"$1\" not found" >& 2
+    return 1
+  fi
+
+  # Create script from template if it doesn't exist
   if [[ ! -e "$s_loc" ]]; then
-    echo "$default_content" >> "$s_loc"
+    cp "$t_loc" "$s_loc"
     chmod 755 "$s_loc"
   fi
 
@@ -113,8 +120,8 @@ function __s_edit {
     "$EDITOR" "$s_loc"
   fi
 
-  # Remove script if nothing was added
-  if [[ "$(cat $s_loc)" == "$default_content" ]]; then
+  # Remove script if not different from template
+  if [[ "$(cat "$s_loc")" == "$(cat "$t_loc")" ]]; then
     rm "$s_loc"
   fi
 }
