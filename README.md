@@ -115,6 +115,31 @@ $ s lo
 
 ## Other features
 
+### Templates
+
+`s` allows you to create scripts from templates.  Nothing fancy here.  All
+that's happening is that the template is copied to the location of the new
+script in the background before `s` opens it up for editing.  Here are some
+examples of how to use templates:
+
+```bash
+$ s foo     # Uses the template "default" to add/edit a script "foo"
+$ s -b bar  # Uses the template "bash" to add/edit a script "bar"
+$ s -r baz  # Uses the template "ruby" to add/edit a script "baz"
+
+# Uses the template "python_with_args" to add/edit a script "bing"
+$ s -t python_with_args bing
+```
+
+`s` looks for templates using the value of `$S_TEMPLATE_PATH` in its
+environment.  By default, this variable points to the `templates` directory in
+the same location as `s.sh` when it was sourced.  You can also manually specify
+the location of your templates directory:
+
+```bash
+export S_TEMPLATE_PATH=<path to template directory>
+```
+
 ### Arguments to the $EDITOR command
 
 If you want to specify any arguments which will be passed to the `$EDITOR`
