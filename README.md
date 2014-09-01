@@ -13,36 +13,53 @@ day, so why not make it as simple as possible?  `s` tries to do this.
 Some use cases:
 
 ```bash
-$ s foo  # opens 'foo' in $EDITOR
-$ s      # lists scripts in your bin directory
-$ s bar  # if 'bar' does not exist, creates it in your bin directory and opens it
+# Creates and/or edits a script 'foo' in $EDITOR
+s foo
+
+# Lists scripts in your bin directory
+s
+
+# Uses your template called 'python' to create and edit a new script
+# 'bar'.  Just edits the script if it already exists.
+s -t python bar
 ```
 
 ...nice, huh?
 
 ## Usage
 
-    usage: s [options] [script]
+    usage: s [options] [script name]
 
     info/manipulation:
-      -l, --list           List all scripts.
-                           This is the default command if no arguments are
-                           passed.
-      -m, --move foo bar   Renames a script 'foo' to 'bar'.
-      -c, --copy foo bar   Copies a script 'foo' to 'bar'.
-      -d, --delete <foo>   Deletes the script 'foo'.
+      -l, --list
+          List all scripts.  This is the default option if no arguments are
+          passed.
+
+      -m, --move <old name> <new name>
+          Renames a script.
+
+      -c, --copy <source script name> <new script name>
+          Copies a script.
+
+      -d, --delete <script name>
+          Deletes a script.
 
     adding/editing:
-      -b, --bash <foo>     Add/edit bash script 'foo'.
-                           This is the default if a script name is given, but
-                           no script type is specified.
-      -z, --zsh <foo>      Add/edit zsh script 'foo'.
-      -p, --python <foo>   Add/edit python script 'foo'.
-      -r, --ruby <foo>     Add/edit ruby script 'foo'.
-      -pe, --perl <foo>    Add/edit perl script 'foo'.
+      -t, --template <template name> <script name>
+          Creates and edits a new script with the given template if no
+          script exists with that name.  If a script does exist, opens that
+          script for editing.
+
+      -b, --bash <script>     Shorthand for `s -t bash <script>`
+                              This is the default if a script name is the
+                              only argument given to `s`.
+      -z, --zsh <script>      Shorthand for `-t zsh <script>`
+      -p, --python <script>   Shorthand for `-t python <script>`
+      -r, --ruby <script>     Shorthand for `-t ruby <script>`
+      -pe, --perl <script>    Shorthand for `-t perl <script>`
 
     etc:
-      -h, --help           Show this help screen.
+      -h, --help              Show this help screen.
 
 ## Installation
 
@@ -63,15 +80,16 @@ export S_BIN_PATH=<path to bin directory>
 
 ## Examples
 
-To create a new script using `s` called `lo`, issue the following command:
+To create a new script with `s` called `lo`, issue the following
+command:
 
 ```bash
 $ s lo
 ```
 
-This will open a new file using `$EDITOR`.  By default, `s` will automatically
-insert a bash shebang line at the top.  This behavior can be adjusted with the
-`-z`, `-p`, `-r`, and `-pe` options.  Enter some code:
+This will open a new file using `$EDITOR`.  `s` will use the "default" template
+in your templates directory if no other options are given.  This behavior can be
+adjusted with the `-t`, `-z`, `-p`, `-r`, and `-pe` options.  Enter some code:
 
 ```bash
 #!/usr/bin/env bash
