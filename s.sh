@@ -219,7 +219,7 @@ function __s_list {
 
 # Lists all templates in $S_TEMPLATE_PATH
 function __s_template_list {
-  # Echo $S_BIN_PATH if not a terminal
+  # Echo $S_TEMPLATE_PATH if not a terminal
   if [[ ! -t 1 ]]; then
     echo -n "$S_TEMPLATE_PATH"
     return 0
