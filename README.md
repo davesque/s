@@ -9,8 +9,9 @@ mine.
 ## Purpose
 
 Making quick edits to your shell scripts, adding new ones, adding the default
-shebang line, etc. can get annoying.  A lot of us do this pretty often every
-day, so why not make it as simple as possible?  `s` tries to do this.
+shebang line and other boiler plate, etc. can get annoying.  A lot of us do
+this pretty often every day, so why not make it as simple as possible?  `s`
+tries to do this.
 
 A sample of what `s` can do:
 
