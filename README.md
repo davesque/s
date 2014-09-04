@@ -12,7 +12,7 @@ Making quick edits to your shell scripts, adding new ones, adding the default
 shebang line, etc. can get annoying.  A lot of us do this pretty often every
 day, so why not make it as simple as possible?  `s` tries to do this.
 
-Some use cases:
+A sample of what `s` can do:
 
 ```bash
 # If no script called "foo" exists, creates and edits it in $EDITOR.  If "foo"
@@ -32,20 +32,20 @@ $ s -t python_with_args baz
 # Lists available templates
 $ s -t
 
-# Edits the "python" template
+# Edits or creates and edits the "python" template
 $ s -t python
 
-# Echo the path of a script "foo" to stdout
+# Echoes the path of a script "foo" to stdout
 $ echo $(s foo)
 
-# Echo the path of a template "foo" to stdout
+# Echoes the path of a template "foo" to stdout
 $ echo $(s -t foo)
 
-# Rename a script "foo" to "bar"
+# Renames a script "foo" to "bar"
 $ mv $(s foo) $(s bar)  # or
 $ s -m foo bar
 
-# Rename a template "foo" to "bar"
+# Renames a template "foo" to "bar"
 $ mv $(s -t foo) $(s -t bar)
 ```
 
