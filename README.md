@@ -51,8 +51,6 @@ No biggie.  Just makes things a bit easier.
           script for editing.
 
       -b, --bash <script>     Shorthand for `s -t bash <script>`
-                              This is the default if a script name is the
-                              only argument given to `s`.
       -z, --zsh <script>      Shorthand for `-t zsh <script>`
       -p, --python <script>   Shorthand for `-t python <script>`
       -r, --ruby <script>     Shorthand for `-t ruby <script>`
