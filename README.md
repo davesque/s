@@ -15,18 +15,20 @@ day, so why not make it as simple as possible?  `s` tries to do this.
 Some use cases:
 
 ```bash
-# Creates and/or edits a script 'foo' in $EDITOR
+# If no script called "foo" exists, creates and edits it in $EDITOR.  If "foo"
+# already exists, just edits it.  Uses the "default" template.  More about
+# templates below.
 $ s foo
 
-# Lists scripts in your bin directory
+# Lists all scripts in your bin directory
 $ s
 
-# Uses your template called 'python' to create and edit a new script
-# 'bar'.  Just edits the script if it already exists.
-$ s -t python bar
-```
+# Uses the "python" template to create and/or edit a new script "bar"
+$ s -p bar
 
-No biggie.  Just makes things a bit easier.
+# Uses the "python_with_args" template to create and/or edit a new script 'baz'
+$ s -t python_with_args baz
+```
 
 ## Usage
 
@@ -131,10 +133,10 @@ $ s -r baz  # Uses the template "ruby" to add/edit a script "baz"
 $ s -t python_with_args bing
 ```
 
-`s` looks for templates using the value of `$S_TEMPLATE_PATH` in its
-environment.  By default, this variable points to the `templates` directory in
-the same location as `s.sh` when it was sourced.  You can also manually specify
-the location of your templates directory:
+`s` looks for templates in `$S_TEMPLATE_PATH`.  By default, this variable
+points to the `templates` directory in the same location as `s.sh` when it was
+sourced.  You can also manually specify the location of your templates
+directory:
 
 ```bash
 export S_TEMPLATE_PATH=<path to template directory>
