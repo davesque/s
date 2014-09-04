@@ -3,7 +3,7 @@
 ## Acknowledgements
 
 `s` was originally inspired by [f](https://github.com/colinta/f), the work of
-[Colin T.A. Grey](http://colinta.com), an extraordinary former colleague of
+[Colin T.A. Gray](http://colinta.com), an extraordinary former colleague of
 mine.
 
 ## Purpose
@@ -41,12 +41,12 @@ $ echo $(s foo)
 # Echoes the path of a template "foo" to stdout
 $ echo $(s -t foo)
 
-# Renames a script "foo" to "bar"
-$ mv $(s foo) $(s bar)  # or
-$ s -m foo bar
+# Deletes a script "foo"
+$ rm $(s foo)
+$ s -d foo
 
-# Renames a template "foo" to "bar"
-$ mv $(s -t foo) $(s -t bar)
+# Deletes a template "foo"
+$ rm $(s -t foo)
 ```
 
 ## Usage
