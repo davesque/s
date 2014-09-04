@@ -93,6 +93,12 @@ function __s_init {
 
 # Opens a file with any specified editor args
 function __s_open {
+  # Echo path if not a terminal
+  if [[ ! -t 1 ]]; then
+    echo -n "$1"
+    return 0
+  fi
+
   if [[ -n "$S_EDITOR_ARGS" ]]; then
     eval "$EDITOR $S_EDITOR_ARGS $1"
   else
@@ -201,12 +207,24 @@ function __s_delete {
 
 # Lists all scripts in $S_BIN_PATH
 function __s_list {
+  # Echo $S_BIN_PATH if not a terminal
+  if [[ ! -t 1 ]]; then
+    echo -n "$S_BIN_PATH"
+    return 0
+  fi
+
   echo "${fg_bold[yellow]}Available scripts:${reset_color}"
   ls -1 "$S_BIN_PATH/"
 }
 
 # Lists all templates in $S_TEMPLATE_PATH
 function __s_template_list {
+  # Echo $S_BIN_PATH if not a terminal
+  if [[ ! -t 1 ]]; then
+    echo -n "$S_TEMPLATE_PATH"
+    return 0
+  fi
+
   echo "${fg_bold[yellow]}Available templates:${reset_color}"
   ls -1 "$S_TEMPLATE_PATH/"
 }
