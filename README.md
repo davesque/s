@@ -28,6 +28,25 @@ $ s -p bar
 
 # Uses the "python_with_args" template to create and/or edit a new script 'baz'
 $ s -t python_with_args baz
+
+# Lists available templates
+$ s -t
+
+# Edits the "python" template
+$ s -t python
+
+# Echo the path of a script "foo" to stdout
+$ echo $(s foo)
+
+# Echo the path of a template "foo" to stdout
+$ echo $(s -t foo)
+
+# Rename a script "foo" to "bar"
+$ mv $(s foo) $(s bar)  # or
+$ s -m foo bar
+
+# Rename a template "foo" to "bar"
+$ mv $(s -t foo) $(s -t bar)
 ```
 
 ## Usage
@@ -37,7 +56,8 @@ $ s -t python_with_args baz
     info/manipulation:
       -l, --list
           List all scripts.  This is the default option if no arguments are
-          passed.
+          passed.  In a non-terminal environment, prints $S_BIN_PATH to
+          stdout.
 
       -m, --move <old name> <new name>
           Renames a script.
@@ -49,10 +69,17 @@ $ s -t python_with_args baz
           Deletes a script.
 
     adding/editing:
-      -t, --template <template name> <script name>
-          Creates and edits a new script with the given template if no
-          script exists with that name.  If a script does exist, opens that
-          script for editing.
+      -t, --template [template name] [script name]
+          If no extra arguments are given, lists available templates.  In a
+          non-terminal environment, prints $S_TEMPLATE_PATH to stdout.
+
+          If only a template name is given, edits or creates and edits that
+          template in $EDITOR.  In a non-terminal environment, prints the
+          path of the template to stdout.
+
+          If a template name and script name are given, edits or creates and
+          edits the script with the given template.  In a non-terminal
+          environment, prints the path of the script to stdout.
 
       -b, --bash <script>     Shorthand for `-t bash <script>`
       -z, --zsh <script>      Shorthand for `-t zsh <script>`
@@ -140,6 +167,32 @@ directory:
 
 ```bash
 export S_TEMPLATE_PATH=<path to template directory>
+```
+
+### Non-terminal invocation
+
+Certain `s` commands behave differently if not executed in a terminal.  Here are
+some examples of how this is useful:
+
+```bash
+echo $(s)      # Echo $S_BIN_PATH to stdout
+echo $(s foo)  # Echo path of script "foo" to stdout
+
+echo $(s -t)         # Echo $S_BIN_PATH to stdout
+echo $(s -t python)  # Echo path of template "python" to stdout
+
+mv $(s foo) $(s bar)  # Rename a script "foo" to "bar"
+s -m foo bar          # Shorthand for above command
+
+cp $(s foo) $(s bar)  # Create a new script "bar" using script "foo"
+s -c foo bar          # Shorthand for above command
+
+rm $(s bar)  # Remove a script "bar"
+s -d bar     # Shorthand for above command
+
+mv $(s -t foo) $(s -t bar)  # Rename a template "foo" to "bar"
+cp $(s -t foo) $(s -t bar)  # Copy a template "foo" to "bar"
+rm $(s -t bar)              # Remove a template "bar"
 ```
 
 ### Arguments to the $EDITOR command
