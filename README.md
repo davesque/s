@@ -42,7 +42,7 @@ $ echo $(s foo)
 $ echo $(s -t foo)
 
 # Deletes a script "foo"
-$ rm $(s foo)
+$ rm $(s foo)  # or
 $ s -d foo
 
 # Deletes a template "foo"
