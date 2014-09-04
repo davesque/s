@@ -2,7 +2,9 @@
 
 ## Acknowledgements
 
-`s` was originally inspired by [f](https://github.com/colinta/f).
+`s` was originally inspired by [f](https://github.com/colinta/f), the work of
+[Colin T.A. Grey](http://colinta.com), an extraordinary former colleague of
+mine.
 
 ## Purpose
 
