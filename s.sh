@@ -91,16 +91,30 @@ function __s_init {
   export S_INITIALIZED="done"
 }
 
+# Opens a file with any specified editor args
+function __s_open {
+  if [[ -n "$S_EDITOR_ARGS" ]]; then
+    eval "$EDITOR $S_EDITOR_ARGS $1"
+  else
+    "$EDITOR" "$1"
+  fi
+}
+
 # Edits or adds a script in $S_BIN_PATH
 function __s_edit {
-  if [[ -z "$1" || -z "$2" ]]; then
-    echo "s: must invoke as follows \`s [-b|-z|-p|-r|-pe] <script name>\`" >& 2
-    echo "or \`s -t <template name> <script name>\`" >& 2
-    return 1
+  if [[ -z "$1" ]]; then
+    __s_template_list
+    return 0
   fi
 
   local t_loc="$S_TEMPLATE_PATH/$1"
   local s_loc="$S_BIN_PATH/$2"
+
+  if [[ -z "$2" ]]; then
+    # Edit template
+    __s_open "$t_loc"
+    return 0
+  fi
 
   if [[ ! -e "$t_loc" ]]; then
     echo "s: template \"$1\" not found" >& 2
@@ -114,11 +128,7 @@ function __s_edit {
   fi
 
   # Edit script
-  if [[ -n "$S_EDITOR_ARGS" ]]; then
-    eval "$EDITOR $S_EDITOR_ARGS $s_loc"
-  else
-    "$EDITOR" "$s_loc"
-  fi
+  __s_open "$s_loc"
 
   # Remove script if not different from template
   if [[ "$(cat "$s_loc")" == "$(cat "$t_loc")" ]]; then
@@ -191,8 +201,14 @@ function __s_delete {
 
 # Lists all scripts in $S_BIN_PATH
 function __s_list {
-  echo "${fg_bold[yellow]}List of scripts:${reset_color}"
+  echo "${fg_bold[yellow]}Available scripts:${reset_color}"
   ls -1 "$S_BIN_PATH/"
+}
+
+# Lists all templates in $S_TEMPLATE_PATH
+function __s_template_list {
+  echo "${fg_bold[yellow]}Available templates:${reset_color}"
+  ls -1 "$S_TEMPLATE_PATH/"
 }
 
 function __s_help {
