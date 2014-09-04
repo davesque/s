@@ -263,11 +263,11 @@ adding/editing:
       edits the script with the given template.  In a non-terminal
       environment, prints the path of the script to stdout.
 
-  -b, --bash <script>     Shorthand for \`-t bash <script>\`
-  -z, --zsh <script>      Shorthand for \`-t zsh <script>\`
-  -p, --python <script>   Shorthand for \`-t python <script>\`
-  -r, --ruby <script>     Shorthand for \`-t ruby <script>\`
-  -pe, --perl <script>    Shorthand for \`-t perl <script>\`
+  -b, --bash [script]     Shorthand for \`-t bash [script]\`
+  -z, --zsh [script]      Shorthand for \`-t zsh [script]\`
+  -p, --python [script]   Shorthand for \`-t python [script]\`
+  -r, --ruby [script]     Shorthand for \`-t ruby [script]\`
+  -pe, --perl [script]    Shorthand for \`-t perl [script]\`
 
 etc:
   -h, --help              Show this help screen.
