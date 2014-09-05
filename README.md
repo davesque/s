@@ -13,41 +13,41 @@ shebang line and other boiler plate, etc. can get annoying.  A lot of us do
 this pretty often every day, so why not make it as simple as possible?  `s`
 tries to do this.
 
-A sample of what `s` can do:
+Some examples of what `s` does:
 
 ```bash
+# Lists available scripts
+s
+
 # If no script called "foo" exists, creates and edits it in $EDITOR.  If "foo"
 # already exists, just edits it.  Uses the "default" template.  More about
 # templates below.
-$ s foo
+s foo
 
-# Lists all scripts in your bin directory
-$ s
+# Uses the "python" template to create and/or edit a script "bar"
+s -p bar
 
-# Uses the "python" template to create and/or edit a new script "bar"
-$ s -p bar
-
-# Uses the "python_with_args" template to create and/or edit a new script 'baz'
-$ s -t python_with_args baz
+# Uses the "python_with_args" template to create and/or edit a script "baz"
+s -t python_with_args baz
 
 # Lists available templates
-$ s -t
+s -t
 
-# Edits or creates and edits the "python" template
-$ s -t python
+# Creates and/or edits a template "python"
+s -t python
 
 # Echoes the path of a script "foo" to stdout
-$ echo $(s foo)
+echo $(s foo)
 
 # Echoes the path of a template "foo" to stdout
-$ echo $(s -t foo)
+echo $(s -t foo)
 
 # Deletes a script "foo"
-$ rm $(s foo)  # or
-$ s -d foo
+rm $(s foo)  # or
+s -d foo
 
 # Deletes a template "foo"
-$ rm $(s -t foo)
+rm $(s -t foo)
 ```
 
 ## Usage
@@ -105,44 +105,6 @@ change this, add the following somewhere in your `zshrc` or `bashrc`:
 export S_BIN_PATH=<path to bin directory>
 ```
 
-## Examples
-
-To create a new script with `s` called `lo`, issue the following
-command:
-
-```bash
-$ s lo
-```
-
-This will open a new file using `$EDITOR`.  `s` will use the "default" template
-in your templates directory if no other options are given.  This behavior can be
-adjusted with the `-t`, `-z`, `-p`, `-r`, and `-pe` options.  Enter some code:
-
-```bash
-#!/usr/bin/env bash
-
-if [[ $# -eq 0 ]]; then
-  libreoffice --help
-else
-  libreoffice "$@" &
-fi
-```
-
-Save and exit.  The code is saved in the directory specified by `$S_BIN_PATH`.
-Try out the new script:
-
-```bash
-$ lo somefile.doc
-```
-
-What if you want to edit `lo` later?...
-
-```bash
-$ s lo
-```
-
-...opens the code for `lo` in `$EDITOR`.  Make your changes, save, and quit.
-
 ## Other features
 
 ### Templates
@@ -153,12 +115,27 @@ script in the background before `s` opens it up for editing.  Here are some
 examples of how to use templates:
 
 ```bash
-$ s foo     # Uses the template "default" to add/edit a script "foo"
-$ s -b bar  # Uses the template "bash" to add/edit a script "bar"
-$ s -r baz  # Uses the template "ruby" to add/edit a script "baz"
+s foo     # Uses the template "default" to add/edit a script "foo"
+s -b bar  # Uses the template "bash" to add/edit a script "bar"
+s -r baz  # Uses the template "ruby" to add/edit a script "baz"
 
 # Uses the template "python_with_args" to add/edit a script "bing"
-$ s -t python_with_args bing
+s -t python_with_args bing
+
+# Lists available templates
+s -t
+
+# Creates and/or edits a template "foo"
+s -t foo
+
+# Remove a template "foo"
+rm $(s -t foo)
+
+# Makes a copy of a template "foo" called "bar"
+cp $(s -t foo) $(s -t bar)
+
+# Rename a template "foo" to "bar"
+mv $(s -t foo) $(s -t bar)
 ```
 
 `s` looks for templates in `$S_TEMPLATE_PATH`.  By default, this variable
