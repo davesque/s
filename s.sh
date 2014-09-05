@@ -230,7 +230,7 @@ function __s_template_list {
 }
 
 function __s_help {
-  cat <<HELP
+  cat <<EOF
 s, a simple shell script manager
 
 usage: s [options] [script name]
@@ -329,7 +329,7 @@ non-terminal invocation recipes:
   cp \$(s -t foo) \$(s -t bar)  # Copy a template "foo" to "bar"
   rm \$(s -t bar)              # Remove a template "bar"
 
-HELP
+EOF
 }
 
 __s_init
