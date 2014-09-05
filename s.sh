@@ -100,7 +100,7 @@ function __s_open {
   fi
 
   if [[ -n "$S_EDITOR_ARGS" ]]; then
-    eval "$EDITOR $S_EDITOR_ARGS $1"
+    "$EDITOR" "${S_EDITOR_ARGS[@]}" "$1"
   else
     "$EDITOR" "$1"
   fi

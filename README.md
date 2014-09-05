@@ -91,7 +91,7 @@ rm $(s -t foo)
 ## Installation
 
 1. Clone the `s` repo into a directory
-2. Add the following to your `bashrc` or `zshrc`:
+2. Add the following to your `bashrc`:
 
 ```bash
 source <path to s.sh>
@@ -99,7 +99,7 @@ source <path to s.sh>
 
 If everything is working, `s` should be available on the command line.  `s`
 will default to using `$HOME/.bin` as your script directory.  If you want to
-change this, add the following somewhere in your `zshrc` or `bashrc`:
+change this, add the following somewhere in your `bashrc`:
 
 ```bash
 export S_BIN_PATH=<path to bin directory>
@@ -179,10 +179,10 @@ If you want to specify any arguments which will be passed to the `$EDITOR`
 command when it is used to edit a script, you can do so with the
 `$S_EDITOR_ARGS` variable.  For example, if your `$EDITOR` was set to "vim" and
 you wanted vim to always set the file type to "zsh" when editing scripts with
-`s`, you could add the following to your zshrc:
+`s`, you could add the following to your `bashrc`:
 
 ```bash
-export S_EDITOR_ARGS="-c 'set ft=zsh'"
+export S_EDITOR_ARGS=(-c 'set ft=zsh')
 ```
 
 This will cause the command `s` uses to open the script file to effectively be
