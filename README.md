@@ -128,13 +128,13 @@ s -t
 # Creates and/or edits a template "foo"
 s -t foo
 
-# Remove a template "foo"
+# Removes a template "foo"
 rm $(s -t foo)
 
 # Makes a copy of a template "foo" called "bar"
 cp $(s -t foo) $(s -t bar)
 
-# Rename a template "foo" to "bar"
+# Renames a template "foo" to "bar"
 mv $(s -t foo) $(s -t bar)
 ```
 
