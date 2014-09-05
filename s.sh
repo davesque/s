@@ -230,7 +230,7 @@ function __s_template_list {
 }
 
 function __s_help {
-  cat <<EOF
+  cat <<'EOF'
 s, a simple shell script manager
 
 usage: s [options] [script name]
@@ -238,7 +238,7 @@ usage: s [options] [script name]
 info/manipulation:
   -l, --list
       List all scripts.  This is the default option if no arguments are
-      passed.  In a non-terminal environment, prints \$S_BIN_PATH to
+      passed.  In a non-terminal environment, prints $S_BIN_PATH to
       stdout.
 
   -m, --move <old name> <new name>
@@ -253,81 +253,81 @@ info/manipulation:
 adding/editing:
   -t, --template [template name] [script name]
       If no extra arguments are given, lists available templates.  In a
-      non-terminal environment, prints \$S_TEMPLATE_PATH to stdout.
+      non-terminal environment, prints $S_TEMPLATE_PATH to stdout.
 
       If only a template name is given, edits or creates and edits that
-      template in \$EDITOR.  In a non-terminal environment, prints the
+      template in $EDITOR.  In a non-terminal environment, prints the
       path of the template to stdout.
 
       If a template name and script name are given, edits or creates and
       edits the script with the given template.  In a non-terminal
       environment, prints the path of the script to stdout.
 
-  -b, --bash [script]     Shorthand for \`-t bash [script]\`
-  -z, --zsh [script]      Shorthand for \`-t zsh [script]\`
-  -p, --python [script]   Shorthand for \`-t python [script]\`
-  -r, --ruby [script]     Shorthand for \`-t ruby [script]\`
-  -pe, --perl [script]    Shorthand for \`-t perl [script]\`
+  -b, --bash [script]     Shorthand for `-t bash [script]`
+  -z, --zsh [script]      Shorthand for `-t zsh [script]`
+  -p, --python [script]   Shorthand for `-t python [script]`
+  -r, --ruby [script]     Shorthand for `-t ruby [script]`
+  -pe, --perl [script]    Shorthand for `-t perl [script]`
 
 etc:
   -h, --help              Show this help screen.
 
 examples:
 
-To list available scripts with \`s\`:
+To list available scripts with `s`:
 
   $ s
 
-To create a new script with \`s\` called \`lo\`, issue the following
+To create a new script with `s` called `lo`, issue the following
 command:
 
   $ s lo
 
-This will open a new file using \`\$EDITOR\`.  \`s\` will use the
+This will open a new file using `$EDITOR`.  `s` will use the
 "default" template in your templates directory if no other options are
-given.  This behavior can be adjusted with the \`-t\`, \`-z\`, \`-p\`, \`-r\`,
-and \`-pe\` options.  Enter some code:
+given.  This behavior can be adjusted with the `-t`, `-z`, `-p`, `-r`,
+and `-pe` options.  Enter some code:
 
   #!/usr/bin/env bash
 
-  if [[ \$# -eq 0 ]]; then
+  if [[ $# -eq 0 ]]; then
     libreoffice --help
   else
-    libreoffice "\$@" &
+    libreoffice "$@" &
   fi
 
 Save and exit.  The code is saved in the directory specified by
-\`\$S_BIN_PATH\`.  Try out the new script:
+`$S_BIN_PATH`.  Try out the new script:
 
   $ lo somefile.doc
 
-What if you want to edit \`lo\` later?...
+What if you want to edit `lo` later?...
 
   $ s lo
 
-...opens the code for \`lo\` in \`\$EDITOR\`.  Make your changes, save,
+...opens the code for `lo` in `$EDITOR`.  Make your changes, save,
 and quit.
 
 non-terminal invocation recipes:
 
-  echo \$(s)      # Echo \$S_BIN_PATH to stdout
-  echo \$(s foo)  # Echo path of script "foo" to stdout
+  echo $(s)      # Echo $S_BIN_PATH to stdout
+  echo $(s foo)  # Echo path of script "foo" to stdout
 
-  echo \$(s -t)         # Echo \$S_BIN_PATH to stdout
-  echo \$(s -t python)  # Echo path of template "python" to stdout
+  echo $(s -t)         # Echo $S_BIN_PATH to stdout
+  echo $(s -t python)  # Echo path of template "python" to stdout
 
-  mv \$(s foo) \$(s bar)  # Rename a script "foo" to "bar"
+  mv $(s foo) $(s bar)  # Rename a script "foo" to "bar"
   s -m foo bar          # Shorthand for above command
 
-  cp \$(s foo) \$(s bar)  # Create a new script "bar" using script "foo"
+  cp $(s foo) $(s bar)  # Create a new script "bar" using script "foo"
   s -c foo bar          # Shorthand for above command
 
-  rm \$(s bar)  # Remove a script "bar"
+  rm $(s bar)  # Remove a script "bar"
   s -d bar     # Shorthand for above command
 
-  mv \$(s -t foo) \$(s -t bar)  # Rename a template "foo" to "bar"
-  cp \$(s -t foo) \$(s -t bar)  # Copy a template "foo" to "bar"
-  rm \$(s -t bar)              # Remove a template "bar"
+  mv $(s -t foo) $(s -t bar)  # Rename a template "foo" to "bar"
+  cp $(s -t foo) $(s -t bar)  # Copy a template "foo" to "bar"
+  rm $(s -t bar)              # Remove a template "bar"
 
 EOF
 }
