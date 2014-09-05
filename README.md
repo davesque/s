@@ -185,6 +185,12 @@ you wanted vim to always set the file type to "zsh" when editing scripts with
 export S_EDITOR_ARGS=(-c 'set ft=zsh')
 ```
 
+...or in your `zshrc`:
+
+```bash
+S_EDITOR_ARGS=(-c 'set ft=zsh')
+```
+
 This will cause the command `s` uses to open the script file to effectively be
 the following:
 
