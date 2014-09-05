@@ -37,7 +37,7 @@ function s {
     "-pe"|"--perl")
       __s_edit perl "$2";;
     "-t"|"--template")
-      __s_edit $2 "$3";;
+      __s_edit "$2" "$3";;
 
     # etc
     "-h"|"--help")
