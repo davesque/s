@@ -129,8 +129,8 @@ function __s_edit {
 
   # Create script from template if it doesn't exist
   if [[ ! -e "$s_loc" ]]; then
-    cp "$t_loc" "$s_loc"
-    chmod 755 "$s_loc"
+    cp -- "$t_loc" "$s_loc"
+    chmod -- 755 "$s_loc"
   fi
 
   # Edit script
@@ -138,7 +138,7 @@ function __s_edit {
 
   # Remove script if not different from template
   if [[ "$(cat "$s_loc")" == "$(cat "$t_loc")" ]]; then
-    rm "$s_loc"
+    rm -- "$s_loc"
   fi
 }
 
@@ -154,7 +154,7 @@ function __s_move {
 
   if [[ -e "$s_old" && ! -e "$s_new" ]]; then
     echo "Renaming $1 to $2..."
-    mv "$s_old" "$s_new"
+    mv -- "$s_old" "$s_new"
   elif [[ ! -e "$s_old" ]]; then
     echo "$1 not found!" >& 2
   elif [[ -e "$s_new" ]]; then
@@ -177,7 +177,7 @@ function __s_copy {
 
   if [[ -e "$s_old" && ! -e "$s_new" ]]; then
     echo "Copying $1 to $2..."
-    cp "$s_old" "$s_new"
+    cp -- "$s_old" "$s_new"
   elif [[ ! -e "$s_old" ]]; then
     echo "$1 not found!" >& 2
   elif [[ -e "$s_new" ]]; then
@@ -199,7 +199,7 @@ function __s_delete {
 
   if [[ -e "$s_loc" ]]; then
     echo "Deleting $1..."
-    rm "$s_loc"
+    rm -- "$s_loc"
   else
     echo "$1 not found!" >& 2
   fi
@@ -214,7 +214,7 @@ function __s_list {
   fi
 
   echo "${fg_bold[yellow]}Available scripts:${reset_color}"
-  ls -1 "$S_BIN_PATH/"
+  ls -1 -- "$S_BIN_PATH/"
 }
 
 # Lists all templates in $S_TEMPLATE_PATH
@@ -226,7 +226,7 @@ function __s_template_list {
   fi
 
   echo "${fg_bold[yellow]}Available templates:${reset_color}"
-  ls -1 "$S_TEMPLATE_PATH/"
+  ls -1 -- "$S_TEMPLATE_PATH/"
 }
 
 function __s_help {
