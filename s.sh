@@ -137,7 +137,7 @@ function __s_edit {
   __s_open "$s_loc"
 
   # Remove script if not different from template
-  if [[ "$(cat "$s_loc")" == "$(cat "$t_loc")" ]]; then
+  if [[ "$(<"$s_loc")" == "$(<"$t_loc")" ]]; then
     rm -- "$s_loc"
   fi
 }
