@@ -83,7 +83,7 @@ function __s_init {
   fi
 
   # Ensure $S_BIN_PATH is in PATH
-  echo "$PATH" | grep "$S_BIN_PATH" &> /dev/null
+  echo "$PATH" | command grep "$S_BIN_PATH" &> /dev/null
   if [[ $? -eq 1 ]]; then
     export PATH="$S_BIN_PATH:$PATH"
   fi
@@ -214,7 +214,7 @@ function __s_list {
   fi
 
   echo "${fg_bold[yellow]}Available scripts:${reset_color}"
-  ls -1 -- "$S_BIN_PATH/"
+  command ls -1 -- "$S_BIN_PATH/"
 }
 
 # Lists all templates in $S_TEMPLATE_PATH
@@ -226,7 +226,7 @@ function __s_template_list {
   fi
 
   echo "${fg_bold[yellow]}Available templates:${reset_color}"
-  ls -1 -- "$S_TEMPLATE_PATH/"
+  command ls -1 -- "$S_TEMPLATE_PATH/"
 }
 
 function __s_help {
