@@ -83,7 +83,7 @@ function __s_init {
   fi
 
   # Ensure $S_BIN_PATH is in PATH
-  echo "$PATH" | command grep "$S_BIN_PATH" &> /dev/null
+  printf "%s" "$PATH" | command grep -qF -- "$S_BIN_PATH"
   if [[ $? -eq 1 ]]; then
     export PATH="$S_BIN_PATH:$PATH"
   fi
