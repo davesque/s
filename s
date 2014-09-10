@@ -325,5 +325,4 @@ non-terminal invocation recipes:
 EOF
 }
 
-__s_init
 __s "$@"
