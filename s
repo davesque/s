@@ -208,7 +208,7 @@ function __s_list {
     return 0
   fi
 
-  echo "${fg_bold[yellow]}Available scripts:${reset_color}"
+  echo "Available scripts:"
   ls -1 -- "$S_BIN_PATH/"
 }
 
@@ -220,7 +220,7 @@ function __s_template_list {
     return 0
   fi
 
-  echo "${fg_bold[yellow]}Available templates:${reset_color}"
+  echo "Available templates:"
   ls -1 -- "$S_TEMPLATE_PATH/"
 }
 
