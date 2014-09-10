@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
 S_SCRIPT_PATH="$(dirname "$0")"
 
 # Switch board
