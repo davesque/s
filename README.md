@@ -91,10 +91,10 @@ rm $(s -t foo)
 ## Installation
 
 1. Clone the `s` repo into a directory
-2. Add the following to your `bashrc`:
+2. Add the `s` repo directory to your path:
 
 ```bash
-source <path to s.sh>
+export PATH="<path to repo>:$PATH"
 ```
 
 If everything is working, `s` should be available on the command line.  `s`
@@ -139,9 +139,8 @@ mv $(s -t foo) $(s -t bar)
 ```
 
 `s` looks for templates in `$S_TEMPLATE_PATH`.  By default, this variable
-points to the `templates` directory in the same location as `s.sh` when it was
-sourced.  You can also manually specify the location of your templates
-directory:
+points to `templates` in the `s` repo directory.  You can also manually specify
+the location of your templates directory:
 
 ```bash
 export S_TEMPLATE_PATH=<path to template directory>
