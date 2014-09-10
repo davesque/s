@@ -303,22 +303,24 @@ What if you want to edit `lo` later?...
 ...opens the code for `lo` in `$EDITOR`.  Make your changes, save,
 and quit.
 
+Maybe you forgot what your script "lo" does:
+
+  $ cat $(s lo)
+
+...prints the contents of "lo" to stdout.
+
 non-terminal invocation recipes:
 
-  echo $(s)      # Echo $S_BIN_PATH to stdout
-  echo $(s foo)  # Echo path of script "foo" to stdout
+  cd $(s)       # Change directory to $S_BIN_PATH
+  cat $(s foo)  # Print the contents of script "foo" to stdout
 
-  echo $(s -t)         # Echo $S_BIN_PATH to stdout
-  echo $(s -t python)  # Echo path of template "python" to stdout
+  cd $(s -t)          # Change directory to $S_TEMPLATE_PATH
+  cat $(s -t python)  # Print the contents of template "python" to stdout
 
+  # Verbose versions of 's -m', 's -c', and 's -d'
   mv $(s foo) $(s bar)  # Rename a script "foo" to "bar"
-  s -m foo bar          # Shorthand for above command
-
   cp $(s foo) $(s bar)  # Create a new script "bar" using script "foo"
-  s -c foo bar          # Shorthand for above command
-
-  rm $(s bar)  # Remove a script "bar"
-  s -d bar     # Shorthand for above command
+  rm $(s bar)           # Remove a script "bar"
 
   mv $(s -t foo) $(s -t bar)  # Rename a template "foo" to "bar"
   cp $(s -t foo) $(s -t bar)  # Copy a template "foo" to "bar"
