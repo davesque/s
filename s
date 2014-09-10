@@ -4,7 +4,7 @@ S_SCRIPT_PATH="$(dirname "$0")"
 
 # Switch board
 function __s {
-  if [[ -z "$S_INITIALIZED" ]]; then
+  if ! __s_init; then
     echo "s: failed to initialize!" >& 2
     return 1
   fi
@@ -82,8 +82,6 @@ function __s_init {
   if [[ $? -eq 1 ]]; then
     export PATH="$S_BIN_PATH:$PATH"
   fi
-
-  S_INITIALIZED="done"
 }
 
 # Opens a file with any specified editor args
