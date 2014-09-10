@@ -7,7 +7,7 @@ S_SCRIPT_PATH="$(dirname "$0")"
 # Switch board
 function __s {
   if ! __s_init; then
-    echo "s: failed to initialize!" >& 2
+    printf 's: failed to initialize!\n' >& 2
     return 1
   fi
 
@@ -53,7 +53,7 @@ function __s {
 function __s_init {
   # Ensure EDITOR is set
   if [[ -z "$EDITOR" ]]; then
-    echo "s: EDITOR environment variable is not set!" >& 2
+    printf 's: EDITOR environment variable is not set!\n' >& 2
     return 1
   fi
 
@@ -64,7 +64,7 @@ function __s_init {
 
   # Ensure directory at $S_TEMPLATE_PATH exists
   if [[ ! -d "$S_TEMPLATE_PATH" ]]; then
-    echo "s: directory specified by S_TEMPLATE_PATH ($S_TEMPLATE_PATH) does not exist!" >& 2
+    printf 's: directory specified by S_TEMPLATE_PATH (%s) does not exist!\n' "$S_TEMPLATE_PATH" >& 2
     return 1
   fi
 
@@ -75,12 +75,12 @@ function __s_init {
 
   # Ensure directory at $S_BIN_PATH exists
   if [[ ! -d "$S_BIN_PATH" ]]; then
-    echo "s: directory specified by S_BIN_PATH ($S_BIN_PATH) does not exist!" >& 2
+    printf 's: directory specified by S_BIN_PATH (%s) does not exist!\n' "$S_BIN_PATH" >& 2
     return 1
   fi
 
   # Ensure $S_BIN_PATH is in PATH
-  printf "%s" "$PATH" | grep -qF -- "$S_BIN_PATH"
+  printf '%s' "$PATH" | grep -qF -- "$S_BIN_PATH"
   if [[ $? -eq 1 ]]; then
     export PATH="$S_BIN_PATH:$PATH"
   fi
@@ -90,7 +90,7 @@ function __s_init {
 function __s_open {
   # Echo path if not a terminal
   if [[ ! -t 1 ]]; then
-    echo -n "$1"
+    printf '%s' "$1"
     return 0
   fi
 
@@ -118,7 +118,7 @@ function __s_edit {
   fi
 
   if [[ ! -e "$t_loc" ]]; then
-    echo "s: template \"$1\" not found" >& 2
+    printf 's: template "%s" not found\n' "$1" >& 2
     return 1
   fi
 
@@ -140,7 +140,7 @@ function __s_edit {
 # Renames a script in $S_BIN_PATH
 function __s_move {
   if [[ -z "$1" || -z "$2" ]]; then
-    echo "s: must invoke as follows \`s -m <source> <destination>\`" >& 2
+    printf 's: must invoke as follows `s -m <source> <destination>`\n' >& 2
     return 1
   fi
 
@@ -148,12 +148,12 @@ function __s_move {
   local s_new="$S_BIN_PATH/$2"
 
   if [[ -e "$s_old" && ! -e "$s_new" ]]; then
-    echo "Renaming $1 to $2..."
+    printf 'Renaming %s to %s...\n' "$1" "$2"
     mv -- "$s_old" "$s_new"
   elif [[ ! -e "$s_old" ]]; then
-    echo "$1 not found!" >& 2
+    printf '%s not found!\n' "$1" >& 2
   elif [[ -e "$s_new" ]]; then
-    echo "$2 already exists!" >& 2
+    printf '%s already exists!\n' "$2" >& 2
   else
     # Should never happen
     return 1
@@ -163,7 +163,7 @@ function __s_move {
 # Copies a script in $S_BIN_PATH
 function __s_copy {
   if [[ -z "$1" || -z "$2" ]]; then
-    echo "s: must invoke as follows \`s -c <source> <destination>\`" >& 2
+    printf 's: must invoke as follows `s -c <source> <destination>`\n' >& 2
     return 1
   fi
 
@@ -171,12 +171,12 @@ function __s_copy {
   local s_new="$S_BIN_PATH/$2"
 
   if [[ -e "$s_old" && ! -e "$s_new" ]]; then
-    echo "Copying $1 to $2..."
+    printf 'Copying %s to %s...\n' "$1" "$2"
     cp -- "$s_old" "$s_new"
   elif [[ ! -e "$s_old" ]]; then
-    echo "$1 not found!" >& 2
+    printf '%s not found!\n' "$1" >& 2
   elif [[ -e "$s_new" ]]; then
-    echo "$2 already exists!" >& 2
+    printf '%s already exists!\n' "$2" >& 2
   else
     # Should never happen
     return 1
@@ -186,17 +186,17 @@ function __s_copy {
 # Removes a script in $S_BIN_PATH
 function __s_delete {
   if [[ -z "$1" ]]; then
-    echo "s: must invoke as follows \`s -d <script name>\`" >& 2
+    printf 's: must invoke as follows `s -d <script name>`\n' >& 2
     return 1
   fi
 
   local s_loc="$S_BIN_PATH/$1"
 
   if [[ -e "$s_loc" ]]; then
-    echo "Deleting $1..."
+    printf 'Deleting %s...\n' "$1"
     rm -- "$s_loc"
   else
-    echo "$1 not found!" >& 2
+    printf '%s not found!\n' "$1" >& 2
   fi
 }
 
@@ -204,11 +204,11 @@ function __s_delete {
 function __s_list {
   # Echo $S_BIN_PATH if not a terminal
   if [[ ! -t 1 ]]; then
-    echo -n "$S_BIN_PATH"
+    printf '%s' "$S_BIN_PATH"
     return 0
   fi
 
-  echo "Available scripts:"
+  printf 'Available scripts:\n'
   ls -1 -- "$S_BIN_PATH/"
 }
 
@@ -216,11 +216,11 @@ function __s_list {
 function __s_template_list {
   # Echo $S_TEMPLATE_PATH if not a terminal
   if [[ ! -t 1 ]]; then
-    echo -n "$S_TEMPLATE_PATH"
+    printf '%s' "$S_TEMPLATE_PATH"
     return 0
   fi
 
-  echo "Available templates:"
+  printf 'Available templates:\n'
   ls -1 -- "$S_TEMPLATE_PATH/"
 }
 
