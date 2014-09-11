@@ -1,1 +1,1 @@
-compdef '_files -g "$S_BIN_PATH/*(:t)"' s
+compdef '_files -g "$(s)/*(:t)"' s

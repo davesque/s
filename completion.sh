@@ -1,6 +1,6 @@
 _s() {
   cur="${COMP_WORDS[COMP_CWORD]}"
-  opts=($S_BIN_PATH/*)
+  opts=("$(s)"/*)
   COMPREPLY=( $(compgen -W "${opts[*]##*/}" -- $cur) )
 }
 
