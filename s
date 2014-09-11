@@ -82,7 +82,8 @@ function __s_init {
   # Ensure $S_BIN_PATH is in PATH
   printf '%s' "$PATH" | grep -qF -- "$S_BIN_PATH"
   if [[ $? -eq 1 ]]; then
-    export PATH="$S_BIN_PATH:$PATH"
+    printf 's: directory specified by S_BIN_PATH (%s) is not in PATH!\n' "$S_BIN_PATH" >& 2
+    return 1
   fi
 }
 
