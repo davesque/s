@@ -98,19 +98,17 @@ cd $(s -t)
 ## Installation
 
 1. Clone the `s` repo into a directory
-2. Add the `s` repo directory to your path:
+2. Add the following somewhere in your `.bashrc`:
 
 ```bash
-export PATH="<path to repo>:$PATH"
+export S_BIN_PATH=<path to your script directory>
+export PATH="<path to s repo directory>:$S_BIN_PATH:$PATH"
 ```
 
-If everything is working, `s` should be available on the command line.  `s`
-will default to using `$HOME/.bin` as your script directory.  If you want to
-change this, add the following somewhere in your `bashrc`:
-
-```bash
-export S_BIN_PATH=<path to bin directory>
-```
+If everything is working, `s` should be available on the command line.  You can
+also forego exporting `S_BIN_PATH` and `s` will default to using `$HOME/.bin`
+as the location of your scripts directory.  If you do this, just make sure you
+include `$HOME/.bin` in your `PATH`.
 
 ## Other features
 
