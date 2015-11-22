@@ -16,7 +16,7 @@ function __s_init {
     S_TEMPLATES_PATH="$S_SCRIPT_PATH/templates"
   fi
 
-  # Ensure directory at $S_TEMPLATES_PATH exists
+  # Ensure directory at S_TEMPLATES_PATH exists
   if [[ ! -d "$S_TEMPLATES_PATH" ]]; then
     serr 'directory specified by S_TEMPLATES_PATH (%s) does not exist' "$S_TEMPLATES_PATH"
     return $EX_CONFIG
@@ -27,13 +27,13 @@ function __s_init {
     S_BIN_PATH="$HOME/.bin"
   fi
 
-  # Ensure directory at $S_BIN_PATH exists
+  # Ensure directory at S_BIN_PATH exists
   if [[ ! -d "$S_BIN_PATH" ]]; then
     serr 'directory specified by S_BIN_PATH (%s) does not exist' "$S_BIN_PATH"
     return $EX_CONFIG 
   fi
 
-  # Ensure $S_BIN_PATH is in PATH
+  # Ensure S_BIN_PATH is in PATH
   printf '%s' "$PATH" | grep -qF -- "$S_BIN_PATH"
   if [[ $? -eq 1 ]]; then
     serr 'directory specified by S_BIN_PATH (%s) is not in PATH' "$S_BIN_PATH"
