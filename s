@@ -67,15 +67,15 @@ function __s {
 function __s_edit {
   local t_name=$1
   local s_name=${2:-}
-  local t_loc="$S_TEMPLATES_PATH/$1"
-  local s_loc="$S_BIN_PATH/${2:-}"
+  local t_loc="$S_TEMPLATES_PATH/$t_name"
+  local s_loc="$S_BIN_PATH/${s_name:-}"
 
-  if [[ $# -eq 1 ]]; then
+  if [[ -z "${s_name:-}" ]]; then
     # Edit template
     __s_open "$t_loc"
     return 0
   elif [[ ! -e "$t_loc" ]]; then
-    serr 'template "%s" not found' "$1"
+    serr 'template "%s" not found' "$t_name"
     return 1
   fi
 
