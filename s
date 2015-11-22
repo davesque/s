@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -o errexit
+set -o nounset
 
 S_SCRIPT_PATH=$(dirname "$0")
 S_SCRIPT_NAME=$(basename "$0")
@@ -15,61 +16,65 @@ function __s {
     return $EX_CONFIG
   fi
 
-  case "$1" in
-    # info/manipulation
-    "-l"|"--list")
-      __s_list "$S_BIN_PATH" "scripts";;
-    "-m"|"--move")
-      __s_move "$2" "$3";;
-    "-c"|"--copy")
-      __s_copy "$2" "$3";;
-    "-d"|"--delete")
-      __s_delete "$2";;
+  if [[ $# -eq 0 ]]; then
+    __s_list "$S_BIN_PATH" "scripts"
+    return 0
+  fi
 
-    # adding/editing
-    "-b"|"--bash")
-      __s_edit bash "$2";;
-    "-z"|"--zsh")
-      __s_edit zsh "$2";;
-    "-p"|"--python")
-      __s_edit python "$2";;
-    "-r"|"--ruby")
-      __s_edit ruby "$2";;
-    "-pe"|"--perl")
-      __s_edit perl "$2";;
-    "-t"|"--template")
-      __s_edit "$2" "$3";;
+  local cmd=$1
+  shift 1
 
-    # etc
-    "-h"|"--help")
+  case "$cmd" in
+    "-h")
       __s_help;;
 
-    *)
-      if [[ -z "$1" ]]; then
-        __s_list "$S_BIN_PATH" "scripts"
+    "-b"|"-z"|"-p"|"-r"|"-e")
+      if [[ $# -lt 1 ]]; then
+        err 'usage: %s %s <script name>' "$S_SCRIPT_NAME" "$cmd"
+        return $EX_USAGE
+      fi
+
+      case "$cmd" in
+        "-b")
+          __s_edit bash "$1";;
+        "-z")
+          __s_edit zsh "$1";;
+        "-p")
+          __s_edit python "$1";;
+        "-r")
+          __s_edit ruby "$1";;
+        "-e")
+          __s_edit perl "$1";;
+      esac;;
+
+    "-t")
+      if [[ $# -eq 0 ]]; then
+        __s_list "$S_TEMPLATES_PATH" "templates"
+      elif [[ "$1" == "--" ]]; then
+        __s_do "$S_TEMPLATES_PATH" "${@:2}"
       else
-        __s_edit default "$1"
+        __s_edit "$1" "${2:-}"
       fi;;
+
+    "--")
+      __s_do "$S_BIN_PATH" "$@";;
+    *)
+      __s_edit default "$cmd";;
   esac
 }
 
 # Edits or adds a script in S_BIN_PATH
 function __s_edit {
-  if [[ -z "$1" ]]; then
-    __s_list "$S_TEMPLATES_PATH" "templates"
-    return 0
-  fi
-
+  local t_name=$1
+  local s_name=${2:-}
   local t_loc="$S_TEMPLATES_PATH/$1"
-  local s_loc="$S_BIN_PATH/$2"
+  local s_loc="$S_BIN_PATH/${2:-}"
 
-  if [[ -z "$2" ]]; then
+  if [[ $# -eq 1 ]]; then
     # Edit template
     __s_open "$t_loc"
     return 0
-  fi
-
-  if [[ ! -e "$t_loc" ]]; then
+  elif [[ ! -e "$t_loc" ]]; then
     serr 'template "%s" not found' "$1"
     return 1
   fi
@@ -78,71 +83,15 @@ function __s_edit {
   if [[ ! -e "$s_loc" ]]; then
     cp -- "$t_loc" "$s_loc"
     chmod -- 755 "$s_loc"
+    local created=1
   fi
 
   # Edit script
   __s_open "$s_loc"
 
   # Remove script if not different from template
-  if [[ "$(<"$s_loc")" == "$(<"$t_loc")" ]]; then
+  if [[ "${created:-}" -eq 1 && "$(<"$s_loc")" == "$(<"$t_loc")" ]]; then
     rm -- "$s_loc"
-  fi
-}
-
-# Renames a script in S_BIN_PATH
-function __s_move {
-  if [[ -z "$1" || -z "$2" ]]; then
-    serr 'must invoke as follows `s -m <source> <destination>`'
-    return $EX_USAGE
-  fi
-
-  local s_old="$S_BIN_PATH/$1"
-  local s_new="$S_BIN_PATH/$2"
-
-  if [[ ! -e "$s_old" ]]; then
-    serr '"%s" not found' "$1"
-  elif [[ -e "$s_new" ]]; then
-    serr '"%s" already exists' "$2"
-  else
-    mv -- "$s_old" "$s_new"
-    serr 'renamed "%s" to "%s"' "$1" "$2"
-  fi
-}
-
-# Copies a script in S_BIN_PATH
-function __s_copy {
-  if [[ -z "$1" || -z "$2" ]]; then
-    serr 'must invoke as follows `s -c <source> <destination>`'
-    return $EX_USAGE
-  fi
-
-  local s_old="$S_BIN_PATH/$1"
-  local s_new="$S_BIN_PATH/$2"
-
-  if [[ ! -e "$s_old" ]]; then
-    serr '"%s" not found' "$1"
-  elif [[ -e "$s_new" ]]; then
-    serr '"%s" already exists' "$2"
-  else
-    cp -- "$s_old" "$s_new"
-    serr 'copied "%s" to "%s"' "$1" "$2"
-  fi
-}
-
-# Removes a script in S_BIN_PATH
-function __s_delete {
-  if [[ -z "$1" ]]; then
-    serr 'must invoke as follows `s -d <script name>`'
-    return $EX_USAGE
-  fi
-
-  local s_loc="$S_BIN_PATH/$1"
-
-  if [[ ! -e "$s_loc" ]]; then
-    serr '"%s" not found' "$1"
-  else
-    rm -- "$s_loc"
-    serr 'deleted "%s"' "$1"
   fi
 }
 
