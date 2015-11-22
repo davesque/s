@@ -99,103 +99,42 @@ function __s_help {
   cat <<'EOF'
 s, a simple shell script manager
 
-usage: s [options] [script name]
+usage: s [-t [template name] [script name]]
+         [-bzpre [script name]]
+         [-- cmd [arg ...]]
+         [-t -- cmd [arg ...]]
+         [-h]
 
-info/manipulation:
-  -l, --list
-      List all scripts.  This is the default option if no arguments are
-      passed.  In a non-terminal environment, prints $S_BIN_PATH to
-      stdout.
-
-  -m, --move <old name> <new name>
-      Renames a script.
-
-  -c, --copy <source script name> <new script name>
-      Copies a script.
-
-  -d, --delete <script name>
-      Deletes a script.
+With no args, `s` lists all scripts in $S_BIN_PATH.  In a non-terminal
+environment, $S_BIN_PATH is printed to stdout.
 
 adding/editing:
-  -t, --template [template name] [script name]
+  -t [template name] [script name]
       If no extra arguments are given, lists available templates.  In a
       non-terminal environment, prints $S_TEMPLATES_PATH to stdout.
 
       If only a template name is given, edits or creates and edits that
-      template in $EDITOR.  In a non-terminal environment, prints the
-      path of the template to stdout.
+      template in $EDITOR.  In a non-terminal environment, prints the path of
+      the template to stdout.
 
-      If a template name and script name are given, edits or creates and
-      edits the script with the given template.  In a non-terminal
-      environment, prints the path of the script to stdout.
+      If a template name and script name are given, edits or creates and edits
+      the script with the given template.
 
-  -b, --bash [script]     Shorthand for `-t bash [script]`
-  -z, --zsh [script]      Shorthand for `-t zsh [script]`
-  -p, --python [script]   Shorthand for `-t python [script]`
-  -r, --ruby [script]     Shorthand for `-t ruby [script]`
-  -pe, --perl [script]    Shorthand for `-t perl [script]`
+  -b [script]    Shorthand for `-t bash [script]`
+  -z [script]    Shorthand for `-t zsh [script]`
+  -p [script]    Shorthand for `-t python [script]`
+  -r [script]    Shorthand for `-t ruby [script]`
+  -e [script]    Shorthand for `-t perl [script]`
+
+info/manipulation:
+  -- cmd [arg ...]
+      Performs a command with given args in directory specified by $S_BIN_PATH.
+
+  -t -- cmd [arg ...]
+      Performs a command with given args in directory specified by $S_TEMPLATES_PATH.
 
 etc:
   -h, --help              Show this help screen.
-
-examples:
-
-To list available scripts with `s`:
-
-  $ s
-
-To create a new script with `s` called `lo`, issue the following
-command:
-
-  $ s lo
-
-This will open a new file using `$EDITOR`.  `s` will use the
-"default" template in your templates directory if no other options are
-given.  This behavior can be adjusted with the `-t`, `-z`, `-p`, `-r`,
-and `-pe` options.  Enter some code:
-
-  #!/usr/bin/env bash
-
-  if [[ $# -eq 0 ]]; then
-    libreoffice --help
-  else
-    libreoffice "$@" &
-  fi
-
-Save and exit.  The code is saved in the directory specified by
-`$S_BIN_PATH`.  Try out the new script:
-
-  $ lo somefile.doc
-
-What if you want to edit `lo` later?...
-
-  $ s lo
-
-...opens the code for `lo` in `$EDITOR`.  Make your changes, save,
-and quit.
-
-Maybe you forgot what your script "lo" does:
-
-  $ cat $(s lo)
-
-...prints the contents of "lo" to stdout.
-
-non-terminal invocation recipes:
-
-  cd $(s)       # Change directory to $S_BIN_PATH
-  cat $(s foo)  # Print the contents of script "foo" to stdout
-
-  cd $(s -t)          # Change directory to $S_TEMPLATES_PATH
-  cat $(s -t python)  # Print the contents of template "python" to stdout
-
-  # Verbose versions of 's -m', 's -c', and 's -d'
-  mv $(s foo) $(s bar)  # Rename a script "foo" to "bar"
-  cp $(s foo) $(s bar)  # Create a new script "bar" using script "foo"
-  rm $(s bar)           # Remove a script "bar"
-
-  mv $(s -t foo) $(s -t bar)  # Rename a template "foo" to "bar"
-  cp $(s -t foo) $(s -t bar)  # Copy a template "foo" to "bar"
-  rm $(s -t bar)              # Remove a template "bar"
 
 EOF
 }
