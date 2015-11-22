@@ -2,13 +2,17 @@
 
 set -o errexit
 
-S_SCRIPT_PATH="$(dirname "$0")"
+S_SCRIPT_PATH=$(dirname "$0")
+S_SCRIPT_NAME=$(basename "$0")
+
+source "$S_SCRIPT_PATH/utils.sh"
+source "$S_SCRIPT_PATH/s.sh"
 
 # Switch board
 function __s {
   if ! __s_init; then
-    printf 's: failed to initialize!\n' >& 2
-    return 1
+    serr "failed to initialize"
+    return $EX_CONFIG
   fi
 
   case "$1" in
@@ -49,59 +53,6 @@ function __s {
   esac
 }
 
-# Initializes s
-function __s_init {
-  # Ensure EDITOR is set
-  if [[ -z "$EDITOR" ]]; then
-    printf 's: EDITOR environment variable is not set!\n' >& 2
-    return 1
-  fi
-
-  # Set default template path
-  if [[ -z "$S_TEMPLATE_PATH" ]]; then
-    S_TEMPLATE_PATH="$S_SCRIPT_PATH/templates"
-  fi
-
-  # Ensure directory at $S_TEMPLATE_PATH exists
-  if [[ ! -d "$S_TEMPLATE_PATH" ]]; then
-    printf 's: directory specified by S_TEMPLATE_PATH (%s) does not exist!\n' "$S_TEMPLATE_PATH" >& 2
-    return 1
-  fi
-
-  # Set default bin path
-  if [[ -z "$S_BIN_PATH" ]]; then
-    S_BIN_PATH="$HOME/.bin"
-  fi
-
-  # Ensure directory at $S_BIN_PATH exists
-  if [[ ! -d "$S_BIN_PATH" ]]; then
-    printf 's: directory specified by S_BIN_PATH (%s) does not exist!\n' "$S_BIN_PATH" >& 2
-    return 1
-  fi
-
-  # Ensure $S_BIN_PATH is in PATH
-  printf '%s' "$PATH" | grep -qF -- "$S_BIN_PATH"
-  if [[ $? -eq 1 ]]; then
-    printf 's: directory specified by S_BIN_PATH (%s) is not in PATH!\n' "$S_BIN_PATH" >& 2
-    return 1
-  fi
-}
-
-# Opens a file with any specified editor args
-function __s_open {
-  # Echo path if not a terminal
-  if [[ ! -t 1 ]]; then
-    printf '%s' "$1"
-    return 0
-  fi
-
-  if [[ -n "$S_EDITOR_ARGS" ]]; then
-    "$EDITOR" "${S_EDITOR_ARGS[@]}" "$1"
-  else
-    "$EDITOR" "$1"
-  fi
-}
-
 # Edits or adds a script in $S_BIN_PATH
 function __s_edit {
   if [[ -z "$1" ]]; then
@@ -109,7 +60,7 @@ function __s_edit {
     return 0
   fi
 
-  local t_loc="$S_TEMPLATE_PATH/$1"
+  local t_loc="$S_TEMPLATES_PATH/$1"
   local s_loc="$S_BIN_PATH/$2"
 
   if [[ -z "$2" ]]; then
@@ -213,16 +164,16 @@ function __s_list {
   ls -1 -- "$S_BIN_PATH/"
 }
 
-# Lists all templates in $S_TEMPLATE_PATH
+# Lists all templates in $S_TEMPLATES_PATH
 function __s_template_list {
-  # Echo $S_TEMPLATE_PATH if not a terminal
+  # Echo $S_TEMPLATES_PATH if not a terminal
   if [[ ! -t 1 ]]; then
-    printf '%s' "$S_TEMPLATE_PATH"
+    printf '%s' "$S_TEMPLATES_PATH"
     return 0
   fi
 
   printf 'Available templates:\n'
-  ls -1 -- "$S_TEMPLATE_PATH/"
+  ls -1 -- "$S_TEMPLATES_PATH/"
 }
 
 function __s_help {
@@ -249,7 +200,7 @@ info/manipulation:
 adding/editing:
   -t, --template [template name] [script name]
       If no extra arguments are given, lists available templates.  In a
-      non-terminal environment, prints $S_TEMPLATE_PATH to stdout.
+      non-terminal environment, prints $S_TEMPLATES_PATH to stdout.
 
       If only a template name is given, edits or creates and edits that
       template in $EDITOR.  In a non-terminal environment, prints the
@@ -315,7 +266,7 @@ non-terminal invocation recipes:
   cd $(s)       # Change directory to $S_BIN_PATH
   cat $(s foo)  # Print the contents of script "foo" to stdout
 
-  cd $(s -t)          # Change directory to $S_TEMPLATE_PATH
+  cd $(s -t)          # Change directory to $S_TEMPLATES_PATH
   cat $(s -t python)  # Print the contents of template "python" to stdout
 
   # Verbose versions of 's -m', 's -c', and 's -d'
