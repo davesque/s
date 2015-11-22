@@ -37,6 +37,6 @@ function __s_init {
   printf '%s' "$PATH" | grep -qF -- "$S_BIN_PATH"
   if [[ $? -eq 1 ]]; then
     serr 'directory specified by S_BIN_PATH (%s) is not in PATH' "$S_BIN_PATH"
-    return return $EX_CONFIG
+    return $EX_CONFIG
   fi
 }

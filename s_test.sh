@@ -73,10 +73,23 @@ testSInitAbortsIfBinPathIsNotDir() {
     "[[ '$output' =~ does\ not\ exist$ ]]"
 }
 
+testSInitAbortsIfSBinPathNotInPath() {
+  local EDITOR=foo S_TEMPLATES_PATH=. S_BIN_PATH=$(mktemp -d)
+
+  __s_init &> /dev/null
+  assertEquals $EX_CONFIG $?
+
+  local output=$(__s_init)
+  assertTrue 'output does not match regex' \
+    "[[ '$output' =~ not\ in\ PATH$ ]]"
+
+  rmdir "$S_BIN_PATH"
+}
+
 
 if [[ -n "$SHUNIT_PATH" ]]; then
   source $SHUNIT_PATH
 else
-  printf "%s: must set SHUNIT_PATH env var to run tests\n" "$(basename "$0")" >&2
+  printf "%s: must set SHUNIT_PATH var to run tests\n" "$(basename "$0")" >&2
   exit $EX_CONFIG
 fi
