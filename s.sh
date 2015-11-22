@@ -4,15 +4,15 @@ serr() {
 }
 
 # Initializes s
-function __s_init {
+__s_init() {
   # Ensure EDITOR is set
-  if [[ -z "$EDITOR" ]]; then
+  if [[ -z "${EDITOR:-}" ]]; then
     serr 'EDITOR environment variable is not set'
     return $EX_CONFIG
   fi
 
   # Set default template path
-  if [[ -z "$S_TEMPLATES_PATH" ]]; then
+  if [[ -z "${S_TEMPLATES_PATH:-}" ]]; then
     S_TEMPLATES_PATH="$S_SCRIPT_PATH/templates"
   fi
 
@@ -23,7 +23,7 @@ function __s_init {
   fi
 
   # Set default bin path
-  if [[ -z "$S_BIN_PATH" ]]; then
+  if [[ -z "${S_BIN_PATH:-}" ]]; then
     S_BIN_PATH="$HOME/.bin"
   fi
 
@@ -41,8 +41,24 @@ function __s_init {
   fi
 }
 
+# Does something at given path
+__s_do() {
+  if [[ $# -lt 2 ]]; then
+    serr 'path or command not specified'
+    return $EX_USAGE
+  fi
+
+  local path=$1
+  local cmd=("${@:2}")
+
+  pushd "$path" &> /dev/null
+  "${cmd[@]}"
+  serr 'did `%s` in `%s`' "${cmd[*]}" "$path"
+  popd &> /dev/null
+}
+
 # Lists files at path or prints path
-function __s_list {
+__s_list() {
   # Print if not a terminal
   if [[ ! -t 1 ]]; then
     printf '%s' "$1"
@@ -50,21 +66,23 @@ function __s_list {
   fi
 
   err 'Available %s:' "$2"
-  ls -1 -- "$1/"
+  ls -- "$1"
 }
 
 # Opens a file at path or prints path
-function __s_open {
+__s_open() {
   # Print if not a terminal
   if [[ ! -t 1 ]]; then
     printf '%s' "$1"
     return 0
   fi
 
-  if [[ -n "$S_EDITOR_ARGS" ]]; then
-    eval 'local -a args='"$S_EDITOR_ARGS"
-    "$EDITOR" "${args[@]}" "$1"
-  else
-    "$EDITOR" "$1"
+  local cmd=("$EDITOR")
+
+  if [[ -n "${S_EDITOR_ARGS:-}" ]]; then
+    eval 'local -a s_editor_args='"$S_EDITOR_ARGS"
+    cmd+=("${s_editor_args[@]}")
   fi
+
+  "${cmd[@]}" "$1"
 }

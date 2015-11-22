@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+set -o nounset
+
 EX_CONFIG=78
+S_SCRIPT_NAME=s
 
 source ./utils.sh
 source ./s.sh
@@ -96,6 +99,23 @@ testSInitAbortsIfSBinPathNotInPath() {
 }
 
 
+# __s_do tests
+testSDoRequiresAtLeastTwoArguments() {
+  __s_do &> /dev/null
+  assertEquals $EX_USAGE $?
+
+  __s_do test &> /dev/null
+  assertEquals $EX_USAGE $?
+
+  __s_do . ls &> /dev/null
+}
+
+testSDoDoesTheGivenCommandAtTheGivenPath() {
+  local output=$(__s_do . ls s_test.sh 2> /dev/null)
+  assertEquals 's_test.sh' "$output"
+}
+
+
 # __s_list tests
 testSListPrintsArgIfStdOutNotATerminal() {
   local output=$(__s_list arst)
@@ -107,7 +127,7 @@ testSListPrintsFilesAtPath() {
   touch "$tmp_dir/tmp_file"
 
   local output=$( \
-    faketty "source utils.sh && source s.sh && __s_list $tmp_dir 2>/dev/null" | \
+    faketty "source utils.sh && source s.sh && __s_list $tmp_dir 2> /dev/null" | \
     tr -d '\r' \
     )
   assertEquals 'tmp_file' "$output"
@@ -127,11 +147,11 @@ testSOpenUsesEditorToOpenFiles() {
   local EDITOR=printf
 
   export S_EDITOR_ARGS=
-  local output=$(faketty 'source s.sh && __s_open args')
+  local output=$(faketty 'source utils.sh && source s.sh && __s_open args 2> /dev/null')
   assertEquals 'args' "$output"
 
   export S_EDITOR_ARGS='("lots of %s %s" extra)'
-  local output=$(faketty 'source s.sh && __s_open args')
+  local output=$(faketty 'source utils.sh && source s.sh && __s_open args 2> /dev/null')
   assertEquals 'lots of extra args' "$output"
 }
 
