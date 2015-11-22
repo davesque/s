@@ -41,7 +41,19 @@ function __s_init {
   fi
 }
 
-# Opens a file with any specified editor args
+# Lists files at path or prints path
+function __s_list {
+  # Print if not a terminal
+  if [[ ! -t 1 ]]; then
+    printf '%s' "$1"
+    return 0
+  fi
+
+  err 'Available %s:' "$2"
+  ls -1 -- "$1/"
+}
+
+# Opens a file at path or prints path
 function __s_open {
   # Print if not a terminal
   if [[ ! -t 1 ]]; then

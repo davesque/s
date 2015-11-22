@@ -18,7 +18,7 @@ function __s {
   case "$1" in
     # info/manipulation
     "-l"|"--list")
-      __s_list;;
+      __s_list "$S_BIN_PATH" "scripts";;
     "-m"|"--move")
       __s_move "$2" "$3";;
     "-c"|"--copy")
@@ -46,7 +46,7 @@ function __s {
 
     *)
       if [[ -z "$1" ]]; then
-        __s_list
+        __s_list "$S_BIN_PATH" "scripts"
       else
         __s_edit default "$1"
       fi;;
@@ -56,7 +56,7 @@ function __s {
 # Edits or adds a script in S_BIN_PATH
 function __s_edit {
   if [[ -z "$1" ]]; then
-    __s_template_list
+    __s_list "$S_TEMPLATES_PATH" "templates"
     return 0
   fi
 
@@ -144,30 +144,6 @@ function __s_delete {
     rm -- "$s_loc"
     serr 'deleted "%s"' "$1"
   fi
-}
-
-# Lists all scripts in S_BIN_PATH
-function __s_list {
-  # Print S_BIN_PATH if not a terminal
-  if [[ ! -t 1 ]]; then
-    printf '%s' "$S_BIN_PATH"
-    return 0
-  fi
-
-  err 'Available scripts:'
-  ls -1 -- "$S_BIN_PATH/"
-}
-
-# Lists all templates in S_TEMPLATES_PATH
-function __s_template_list {
-  # Print S_TEMPLATES_PATH if not a terminal
-  if [[ ! -t 1 ]]; then
-    printf '%s' "$S_TEMPLATES_PATH"
-    return 0
-  fi
-
-  err 'Available templates:'
-  ls -1 -- "$S_TEMPLATES_PATH/"
 }
 
 function __s_help {
