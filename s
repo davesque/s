@@ -53,7 +53,7 @@ function __s {
   esac
 }
 
-# Edits or adds a script in $S_BIN_PATH
+# Edits or adds a script in S_BIN_PATH
 function __s_edit {
   if [[ -z "$1" ]]; then
     __s_template_list
@@ -70,7 +70,7 @@ function __s_edit {
   fi
 
   if [[ ! -e "$t_loc" ]]; then
-    printf 's: template "%s" not found\n' "$1" >& 2
+    serr 'template "%s" not found' "$1"
     return 1
   fi
 
@@ -89,90 +89,84 @@ function __s_edit {
   fi
 }
 
-# Renames a script in $S_BIN_PATH
+# Renames a script in S_BIN_PATH
 function __s_move {
   if [[ -z "$1" || -z "$2" ]]; then
-    printf 's: must invoke as follows `s -m <source> <destination>`\n' >& 2
-    return 1
+    serr 'must invoke as follows `s -m <source> <destination>`'
+    return $EX_USAGE
   fi
 
   local s_old="$S_BIN_PATH/$1"
   local s_new="$S_BIN_PATH/$2"
 
-  if [[ -e "$s_old" && ! -e "$s_new" ]]; then
-    printf 'Renaming %s to %s...\n' "$1" "$2"
-    mv -- "$s_old" "$s_new"
-  elif [[ ! -e "$s_old" ]]; then
-    printf '%s not found!\n' "$1" >& 2
+  if [[ ! -e "$s_old" ]]; then
+    serr '"%s" not found' "$1"
   elif [[ -e "$s_new" ]]; then
-    printf '%s already exists!\n' "$2" >& 2
+    serr '"%s" already exists' "$2"
   else
-    # Should never happen
-    return 1
+    mv -- "$s_old" "$s_new"
+    serr 'renamed "%s" to "%s"' "$1" "$2"
   fi
 }
 
-# Copies a script in $S_BIN_PATH
+# Copies a script in S_BIN_PATH
 function __s_copy {
   if [[ -z "$1" || -z "$2" ]]; then
-    printf 's: must invoke as follows `s -c <source> <destination>`\n' >& 2
-    return 1
+    serr 'must invoke as follows `s -c <source> <destination>`'
+    return $EX_USAGE
   fi
 
   local s_old="$S_BIN_PATH/$1"
   local s_new="$S_BIN_PATH/$2"
 
-  if [[ -e "$s_old" && ! -e "$s_new" ]]; then
-    printf 'Copying %s to %s...\n' "$1" "$2"
-    cp -- "$s_old" "$s_new"
-  elif [[ ! -e "$s_old" ]]; then
-    printf '%s not found!\n' "$1" >& 2
+  if [[ ! -e "$s_old" ]]; then
+    serr '"%s" not found' "$1"
   elif [[ -e "$s_new" ]]; then
-    printf '%s already exists!\n' "$2" >& 2
+    serr '"%s" already exists' "$2"
   else
-    # Should never happen
-    return 1
+    cp -- "$s_old" "$s_new"
+    serr 'copied "%s" to "%s"' "$1" "$2"
   fi
 }
 
-# Removes a script in $S_BIN_PATH
+# Removes a script in S_BIN_PATH
 function __s_delete {
   if [[ -z "$1" ]]; then
-    printf 's: must invoke as follows `s -d <script name>`\n' >& 2
-    return 1
+    serr 'must invoke as follows `s -d <script name>`'
+    return $EX_USAGE
   fi
 
   local s_loc="$S_BIN_PATH/$1"
 
-  if [[ -e "$s_loc" ]]; then
-    printf 'Deleting %s...\n' "$1"
-    rm -- "$s_loc"
+  if [[ ! -e "$s_loc" ]]; then
+    serr '"%s" not found' "$1"
   else
-    printf '%s not found!\n' "$1" >& 2
+    rm -- "$s_loc"
+    serr 'deleted "%s"' "$1"
   fi
 }
 
-# Lists all scripts in $S_BIN_PATH
+# Lists all scripts in S_BIN_PATH
 function __s_list {
-  # Echo $S_BIN_PATH if not a terminal
+  # Print S_BIN_PATH if not a terminal
   if [[ ! -t 1 ]]; then
     printf '%s' "$S_BIN_PATH"
     return 0
   fi
 
-  printf 'Available scripts:\n'
+  err 'Available scripts:'
   ls -1 -- "$S_BIN_PATH/"
 }
 
-# Lists all templates in $S_TEMPLATES_PATH
+# Lists all templates in S_TEMPLATES_PATH
 function __s_template_list {
-  # Echo $S_TEMPLATES_PATH if not a terminal
+  # Print S_TEMPLATES_PATH if not a terminal
   if [[ ! -t 1 ]]; then
     printf '%s' "$S_TEMPLATES_PATH"
     return 0
   fi
 
-  printf 'Available templates:\n'
+  err 'Available templates:'
   ls -1 -- "$S_TEMPLATES_PATH/"
 }
 
