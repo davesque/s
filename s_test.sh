@@ -8,19 +8,19 @@ source ./s.sh
 
 # err tests
 testErrPrintsLineToStdErr() {
-  IFS= read -rd '' output < <(err 'arst' &2>&1)
+  IFS= read -rd '' output < <(err 'arst' 2>&1)
   assertEquals $'arst\n' "$output"
 }
 
 testErrTakesArgumentsJustLikePrintf() {
-  local output=$(err 'foo %s' 'bar')
+  local output=$(err 'foo %s' 'bar' 2>&1)
   assertEquals 'foo bar' "$output"
 }
 
 
 # serr tests
 testSerrPrintsLineWithScriptName() {
-  local output=$(S_SCRIPT_NAME=s serr 'foo')
+  local output=$(S_SCRIPT_NAME=s serr 'foo' 2>&1)
   assertEquals 's: foo' "$output"
 }
 
@@ -32,7 +32,7 @@ testSInitAbortsWhenEditorNotSet() {
   __s_init &> /dev/null
   assertEquals $EX_CONFIG $?
 
-  local output=$(__s_init)
+  local output=$(__s_init 2>&1)
   assertTrue 'output does not match regex' \
     "[[ '$output' =~ ^.+EDITOR\ environment ]]"
 }
@@ -50,7 +50,7 @@ testSInitAbortsIfTemplatesPathIsNotDir() {
   __s_init &> /dev/null
   assertEquals $EX_CONFIG $?
 
-  local output=$(__s_init)
+  local output=$(__s_init 2>&1)
   assertTrue 'output does not match regex' \
     "[[ '$output' =~ does\ not\ exist$ ]]"
 }
@@ -68,7 +68,7 @@ testSInitAbortsIfBinPathIsNotDir() {
   __s_init &> /dev/null
   assertEquals $EX_CONFIG $?
 
-  local output=$(__s_init)
+  local output=$(__s_init 2>&1)
   assertTrue 'output does not match regex' \
     "[[ '$output' =~ does\ not\ exist$ ]]"
 }
@@ -79,7 +79,7 @@ testSInitAbortsIfSBinPathNotInPath() {
   __s_init &> /dev/null
   assertEquals $EX_CONFIG $?
 
-  local output=$(__s_init)
+  local output=$(__s_init 2>&1)
   assertTrue 'output does not match regex' \
     "[[ '$output' =~ not\ in\ PATH$ ]]"
 
