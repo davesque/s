@@ -87,6 +87,35 @@ testSInitAbortsIfSBinPathNotInPath() {
 }
 
 
+# __s_open tests
+testSOpenPrintsArgIfStdOutNotATerminal() {
+  local output=$(__s_open arst)
+  assertEquals 'arst' "$output"
+}
+
+testSOpenUsesEditorToOpenFiles() {
+  local EDITOR=printf
+
+  local S_EDITOR_ARGS=
+  if [[ $(uname) == Darwin ]]; then
+    local output=$(script -q /dev/null bash -c 'source s.sh && __s_open args')
+  else
+    local output=$(script -qc 'bash -c "source s.sh && __s_open args"' /dev/null)
+  fi
+
+  assertEquals 'args' "$output"
+
+  export S_EDITOR_ARGS='("lots of %s %s" extra)'
+  if [[ $(uname) == Darwin ]]; then
+    local output=$(script -q /dev/null bash -c 'source s.sh && __s_open args')
+  else
+    local output=$(script -qc 'bash -c "source s.sh && __s_open args"' /dev/null)
+  fi
+
+  assertEquals 'lots of extra args' "$output"
+}
+
+
 if [[ -n "$SHUNIT_PATH" ]]; then
   source $SHUNIT_PATH
 else

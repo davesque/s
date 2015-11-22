@@ -1,6 +1,6 @@
 # Prints line to stderr with script name
 serr() {
-  err "$S_SCRIPT_NAME: $1" "${@:2}"
+  err "%s: $1" "$S_SCRIPT_NAME" "${@:2}"
 }
 
 # Initializes s
@@ -38,5 +38,21 @@ function __s_init {
   if [[ $? -eq 1 ]]; then
     serr 'directory specified by S_BIN_PATH (%s) is not in PATH' "$S_BIN_PATH"
     return $EX_CONFIG
+  fi
+}
+
+# Opens a file with any specified editor args
+function __s_open {
+  # Print if not a terminal
+  if [[ ! -t 1 ]]; then
+    printf '%s' "$1"
+    return 0
+  fi
+
+  if [[ -n "$S_EDITOR_ARGS" ]]; then
+    eval 'local -a args='"$S_EDITOR_ARGS"
+    "$EDITOR" "${args[@]}" "$1"
+  else
+    "$EDITOR" "$1"
   fi
 }
