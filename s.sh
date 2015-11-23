@@ -88,7 +88,7 @@ __s_open() {
 }
 
 # Edits/adds a script or template
-function __s_edit {
+__s_edit() {
   local t_name=$1
   local s_name=${2:-}
   local t_loc="$S_TEMPLATES_PATH/$t_name"
@@ -120,7 +120,7 @@ function __s_edit {
 }
 
 # Switch board
-function __s {
+__s() {
   if ! __s_init; then
     serr "failed to initialize"
     return $EX_CONFIG
