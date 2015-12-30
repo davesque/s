@@ -156,9 +156,9 @@ testSOpenUsesEditorToOpenFiles() {
 }
 
 
-if [[ -n "$SHUNIT_PATH" ]]; then
-  source $SHUNIT_PATH
-else
-  printf "%s: must set SHUNIT_PATH var to run tests\n" "$(basename "$0")" >&2
+if [[ -z "${SHUNIT_PATH:-}" ]]; then
+  printf "%s: must set SHUNIT_PATH environment var to run tests\n" "$(basename "$0")" >&2
   exit $EX_CONFIG
 fi
+
+source "$SHUNIT_PATH"
