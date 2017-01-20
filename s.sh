@@ -135,7 +135,7 @@ __s() {
   shift 1
 
   case "$cmd" in
-    "-h")
+    "-h"|"--help")
       __s_help;;
 
     "-b"|"-z"|"-p"|"-r"|"-e")

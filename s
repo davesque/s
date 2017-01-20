@@ -17,7 +17,7 @@ usage: s [-t [template name] [script name]]
          [-bzpre [script name]]
          [-- cmd [arg ...]]
          [-t -- cmd [arg ...]]
-         [-h]
+         [-h|--help]
 
 With no args, `s` lists all scripts in $S_BIN_PATH.  In a non-terminal
 environment, $S_BIN_PATH is printed to stdout.
