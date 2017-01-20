@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0
+
+* Adds fish completion script.
+* Adds test suite to verify funcionality.
+* Simplifies API for copying/moving scripts.
+
 ## 2.0
 
 * Switches to using stand-alone, executable script file instead of shell
