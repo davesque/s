@@ -43,10 +43,11 @@ cat $(s foo)  # Prints the contents of "foo" to stdout
 cat $(s -t foo)
 
 # Or you want to delete a script called "foo"
-s -d foo  # -or-
+s -- rm foo  # -or-
 rm $(s foo)
 
 # Or delete a template called "foo"
+s -t -- rm foo  # -or-
 rm $(s -t foo)
 
 # Maybe you just want to jump into your bin directory and do things the
@@ -59,41 +60,42 @@ cd $(s -t)
 
 ## Usage
 
-    usage: s [options] [script name]
+		usage: s [-t [template name] [script name]]
+						 [-bzpre [script name]]
+						 [-- cmd [arg ...]]
+						 [-t -- cmd [arg ...]]
+						 [-h|--help]
 
-    info/manipulation:
-      -l, --list
-          List all scripts.  This is the default option if no arguments are
-          passed.  In a non-terminal environment, prints $S_BIN_PATH to
-          stdout.
+		With no args, `s` lists all scripts in $S_BIN_PATH.  In a non-terminal
+		environment, $S_BIN_PATH is printed to stdout.
 
-      -m, --move <old name> <new name>
-          Renames a script.
+		adding/editing:
+			-t [template name] [script name]
+					If no extra arguments are given, lists available templates.  In a
+					non-terminal environment, prints $S_TEMPLATES_PATH to stdout.
 
-      -c, --copy <source script name> <new script name>
-          Copies a script.
+					If only a template name is given, edits or creates and edits that
+					template in $EDITOR.  In a non-terminal environment, prints the path of
+					the template to stdout.
 
-      -d, --delete <script name>
-          Deletes a script.
+					If a template name and script name are given, edits or creates and edits
+					the script with the given template.
 
-    adding/editing:
-      -t, --template [template name] [script name]
-          If no extra arguments are given, lists available templates.  In a
-          non-terminal environment, prints $S_TEMPLATE_PATH to stdout.
+			-b [script]    Shorthand for `-t bash [script]`
+			-z [script]    Shorthand for `-t zsh [script]`
+			-p [script]    Shorthand for `-t python [script]`
+			-r [script]    Shorthand for `-t ruby [script]`
+			-e [script]    Shorthand for `-t perl [script]`
 
-          If only a template name is given, edits or creates and edits that
-          template in $EDITOR.  In a non-terminal environment, prints the
-          path of the template to stdout.
+		info/manipulation:
+			-- cmd [arg ...]
+					Performs a command with given args in directory specified by $S_BIN_PATH.
 
-          If a template name and script name are given, edits or creates and
-          edits the script with the given template.  In a non-terminal
-          environment, prints the path of the script to stdout.
+			-t -- cmd [arg ...]
+					Performs a command with given args in directory specified by $S_TEMPLATES_PATH.
 
-      -b, --bash [script]     Shorthand for `-t bash [script]`
-      -z, --zsh [script]      Shorthand for `-t zsh [script]`
-      -p, --python [script]   Shorthand for `-t python [script]`
-      -r, --ruby [script]     Shorthand for `-t ruby [script]`
-      -pe, --perl [script]    Shorthand for `-t perl [script]`
+		etc:
+			-h, --help              Show this help screen.
 
 ## Installation
 
@@ -132,27 +134,42 @@ s -t
 
 # Creates and/or edits a template "foo"
 s -t foo
-
-# Prints the content of template "foo" to stdout
-cat $(s -t foo)
-
-# Removes a template "foo"
-rm $(s -t foo)
-
-# Makes a copy of a template "foo" called "bar"
-cp $(s -t foo) $(s -t bar)
-
-# Renames a template "foo" to "bar"
-mv $(s -t foo) $(s -t bar)
 ```
 
-`s` looks for templates in `$S_TEMPLATE_PATH`.  By default, this variable
+`s` looks for templates in `$S_TEMPLATES_PATH`.  By default, this variable
 points to `templates` in the `s` repo directory.  You can also manually specify
 the location of your templates directory:
 
 ```bash
-export S_TEMPLATE_PATH=<path to template directory>
+export S_TEMPLATES_PATH=<path to template directory>
 ```
+
+### Invoking commands in your bin or template directory
+
+You can use `s` to perform commands in the directories specified by
+`S_BIN_PATH` or `S_TEMPLATES_PATH`.  Here are some examples of how to do this:
+
+```bash
+# Make a copy of the script "do_something" called "do_something_similar"
+s -- cp do_something do_something_similar
+
+# List scripts in bin directory
+s -- ls
+
+# Remove a script called "foo"
+s -- rm foo
+
+# Make a copy of the template "python" called "different_python"
+s -t -- cp python different_python
+
+# List templates in templates directory
+s -t -- ls
+
+# Remove a template called "foo"
+s -t -- rm foo
+```
+
+Any command can be run in either directory in this manner.
 
 ### Non-terminal invocation
 
@@ -163,7 +180,7 @@ some examples of how this is useful:
 cd $(s)       # Change directory to $S_BIN_PATH
 cat $(s foo)  # Print the contents of script "foo" to stdout
 
-cd $(s -t)          # Change directory to $S_TEMPLATE_PATH
+cd $(s -t)          # Change directory to $S_TEMPLATES_PATH
 cat $(s -t python)  # Print the contents of template "python" to stdout
 
 # Verbose versions of 's -m', 's -c', and 's -d'
