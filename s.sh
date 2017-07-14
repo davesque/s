@@ -53,7 +53,7 @@ __s_do() {
 
   pushd "$path" &> /dev/null
   "${cmd[@]}"
-  serr 'did `%s` in `%s`' "${cmd[*]}" "$path"
+  err 'did `%s` in %s' "${cmd[*]}" "$path"
   popd &> /dev/null
 }
 
